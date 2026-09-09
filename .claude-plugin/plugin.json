@@ -1,0 +1,12 @@
+{
+  "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
+  "name": "benenutri",
+  "version": "0.2.1",
+  "description": "Design system, marca e convenções visuais da Benenutri para os projetos Mitra (p-NNNNN): tokens, fontes, logos, primitivos shadcn ajustados e vocabulário de tela.",
+  "author": {
+    "name": "Isaac Portela"
+  },
+  "skills": [
+    "./skills"
+  ]
+}

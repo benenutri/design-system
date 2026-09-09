@@ -1,0 +1,5 @@
+# Sujeira de sistema de arquivos. O plugin é só texto: não há build, não há
+# dependência, não há nada gerado para ignorar além disto.
+Thumbs.db
+desktop.ini
+.DS_Store

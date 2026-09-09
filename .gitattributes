@@ -1,0 +1,8 @@
+# Fim de linha normalizado no repositório (LF) e nativo na cópia de trabalho.
+# Não é enfeite: o design.md chegou aqui com fim de linha MISTO — LF, com um
+# bloco CRLF no meio, de uma seção colada depois — e sem esta regra cada
+# máquina geraria um diff fantasma do arquivo inteiro.
+* text=auto
+
+# A assinatura da marca é binária; o resto do kit é texto.
+*.png binary

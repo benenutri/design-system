@@ -1,0 +1,655 @@
+<title>Design System Benenutri</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Work+Sans:wght@400;500;600;700&display=swap">
+<style>
+  /* ═══ Tokens — cópia do index.css do kit (design.md §2 / §2.1) ═══ */
+  :root {
+    --background: hsl(90 9.1% 95.7%);
+    --foreground: hsl(90 3.7% 10.6%);
+    --card: hsl(0 0% 100%);
+    --popover: hsl(0 0% 100%);
+    --primary: hsl(120.7 67.2% 25.1%);
+    --primary-foreground: hsl(0 0% 100%);
+    --muted: hsl(90 9.1% 95.7%);
+    --muted-foreground: hsl(103.6 5.6% 38.2%);
+    --accent: hsl(109.1 40.7% 94.7%);
+    --accent-foreground: hsl(120.8 67.6% 21.8%);
+    --destructive: hsl(4.2 76.5% 40%);
+    --destructive-btn: var(--destructive);
+    --border: hsl(90 18.5% 89.4%);
+    --input: hsl(90 18.5% 89.4%);
+    --ring: hsl(120.7 67.2% 25.1%);
+    --brand-50: hsl(109.1 40.7% 94.7%);
+    --brand-100: hsl(111.8 36.7% 88.2%);
+    --brand-200: hsl(112.5 36.4% 78.4%);
+    --brand-300: hsl(115.1 35.3% 66.1%);
+    --brand-400: hsl(120.8 33.6% 46.7%);
+    --brand-500: hsl(122 49.4% 34.9%);
+    --brand-600: hsl(120.6 64.9% 29%);
+    --brand-800: hsl(120.8 67.6% 21.8%);
+    --brand-900: hsl(121 66.3% 17.5%);
+    --brand-950: hsl(121.7 71.4% 9.6%);
+    --row-border: hsl(94.3 21.2% 93.5%);
+    --ink-muted: hsl(105 4.7% 49.8%);
+    --attention: hsl(35.1 74.5% 36.9%);
+    --attention-bg: hsl(30 100% 97.3%);
+    --destructive-bg: hsl(5 85.7% 97.3%);
+    --border-soft: rgba(191, 202, 184, 0.38);
+    --overlay: rgba(0, 0, 0, 0.5);
+    --mark-on-accent: #45963d;
+    --radius: 0.75rem;
+    --font-sans: 'Work Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-title: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --background: hsl(120 5% 7.8%);
+      --foreground: hsl(94.3 14.9% 90.8%);
+      --card: hsl(120 5.1% 11.6%);
+      --popover: hsl(120 5.1% 11.6%);
+      --primary: hsl(120.7 36.2% 53.9%);
+      --primary-foreground: hsl(123.6 73.3% 8.8%);
+      --muted: hsl(120 5.4% 14.5%);
+      --muted-foreground: hsl(101.5 7.9% 67.6%);
+      --accent: hsl(123.3 22.5% 15.7%);
+      --accent-foreground: hsl(112.5 36.4% 78.4%);
+      --destructive: hsl(4.6 83.3% 69.4%);
+      --destructive-btn: color-mix(in srgb, hsl(4.6 83.3% 69.4%) 60%, hsl(120 5.1% 11.6%));
+      --border: hsl(120 5% 19.8%);
+      --input: hsl(120 5% 19.8%);
+      --ring: hsl(120.7 36.2% 53.9%);
+      --brand-50: hsl(120 24.6% 13.5%);
+      --brand-100: hsl(113.1 29.5% 17.3%);
+      --brand-200: hsl(116.7 29.5% 23.9%);
+      --brand-300: hsl(117.7 31.3% 32.5%);
+      --brand-400: hsl(120.8 33.6% 46.7%);
+      --brand-500: hsl(120 36.1% 57.6%);
+      --brand-600: hsl(118.1 38.2% 67.6%);
+      --brand-800: hsl(112.5 36.4% 78.4%);
+      --brand-900: hsl(111.8 36.7% 88.2%);
+      --brand-950: hsl(109.1 40.7% 94.7%);
+      --row-border: hsl(120 6.2% 15.9%);
+      --ink-muted: hsl(105 4.8% 51%);
+      --attention: hsl(35.8 75.1% 60.6%);
+      --attention-bg: hsl(37.9 51.4% 14.5%);
+      --destructive-bg: hsl(5.5 39.8% 16.3%);
+      --border-soft: rgba(191, 202, 184, 0.16);
+      --overlay: rgba(0, 0, 0, 0.6);
+      --mark-on-accent: var(--accent-foreground);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --background: hsl(120 5% 7.8%);
+    --foreground: hsl(94.3 14.9% 90.8%);
+    --card: hsl(120 5.1% 11.6%);
+    --popover: hsl(120 5.1% 11.6%);
+    --primary: hsl(120.7 36.2% 53.9%);
+    --primary-foreground: hsl(123.6 73.3% 8.8%);
+    --muted: hsl(120 5.4% 14.5%);
+    --muted-foreground: hsl(101.5 7.9% 67.6%);
+    --accent: hsl(123.3 22.5% 15.7%);
+    --accent-foreground: hsl(112.5 36.4% 78.4%);
+    --destructive: hsl(4.6 83.3% 69.4%);
+    --destructive-btn: color-mix(in srgb, hsl(4.6 83.3% 69.4%) 60%, hsl(120 5.1% 11.6%));
+    --border: hsl(120 5% 19.8%);
+    --input: hsl(120 5% 19.8%);
+    --ring: hsl(120.7 36.2% 53.9%);
+    --brand-50: hsl(120 24.6% 13.5%);
+    --brand-100: hsl(113.1 29.5% 17.3%);
+    --brand-200: hsl(116.7 29.5% 23.9%);
+    --brand-300: hsl(117.7 31.3% 32.5%);
+    --brand-400: hsl(120.8 33.6% 46.7%);
+    --brand-500: hsl(120 36.1% 57.6%);
+    --brand-600: hsl(118.1 38.2% 67.6%);
+    --brand-800: hsl(112.5 36.4% 78.4%);
+    --brand-900: hsl(111.8 36.7% 88.2%);
+    --brand-950: hsl(109.1 40.7% 94.7%);
+    --row-border: hsl(120 6.2% 15.9%);
+    --ink-muted: hsl(105 4.8% 51%);
+    --attention: hsl(35.8 75.1% 60.6%);
+    --attention-bg: hsl(37.9 51.4% 14.5%);
+    --destructive-bg: hsl(5.5 39.8% 16.3%);
+    --border-soft: rgba(191, 202, 184, 0.16);
+    --overlay: rgba(0, 0, 0, 0.6);
+    --mark-on-accent: var(--accent-foreground);
+    color-scheme: dark;
+  }
+
+  /* ═══ Base ═══ */
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    line-height: 1.5;
+    font-variant-numeric: tabular-nums;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4 { font-family: var(--font-title); margin: 0; text-wrap: balance; }
+  p { margin: 0; }
+  button, input { font: inherit; color: inherit; }
+  a { color: var(--primary); }
+  :focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+  svg { display: block; }
+  img { display: block; max-width: 100%; }
+  .brand { color: #45963d; } /* marca ≠ primary (design.md §11) */
+
+  /* ═══ Barra e estrutura da vitrine ═══ */
+  .topbar {
+    position: sticky; top: 0; z-index: 10;
+    display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+    padding: 12px 24px;
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+  }
+  .topbar .grow { flex: 1; min-width: 200px; }
+  .topbar .titulo { font-family: var(--font-title); font-weight: 700; font-size: 15px; }
+  .topbar .sub { color: var(--muted-foreground); font-size: 12px; }
+  .segment { display: inline-flex; height: 36px; padding: 4px; border-radius: 0.75rem; background: var(--muted); gap: 2px; }
+  .segment button {
+    border: 0; background: transparent; color: var(--muted-foreground);
+    padding: 0 12px; border-radius: 0.5rem; font-weight: 600; font-size: 12px; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .segment button[aria-pressed="true"] { background: var(--card); color: var(--primary); box-shadow: 0 1px 2px rgba(0,0,0,.08); }
+  .segment svg { width: 14px; height: 14px; }
+
+  main { max-width: 1120px; margin: 0 auto; padding: 32px 24px 64px; display: grid; gap: 48px; }
+  section > header { display: grid; gap: 6px; margin-bottom: 18px; }
+  .eyebrow { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--primary); }
+  section > header h2 { font-size: 22px; font-weight: 800; }
+  section > header p { color: var(--muted-foreground); max-width: 62ch; }
+  .nota { color: var(--muted-foreground); font-size: 12px; max-width: 70ch; }
+  code, .code { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: 12px; color: var(--muted-foreground); }
+
+  /* ═══ Tokens ═══ */
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .swatch { border: 1px solid var(--border); border-radius: 0.75rem; background: var(--card); overflow: hidden; }
+  .swatch .cor { height: 56px; border-bottom: 1px solid var(--row-border); }
+  .swatch .info { padding: 8px 10px; display: grid; gap: 2px; }
+  .swatch .nome { font-weight: 600; font-size: 12px; }
+  .swatch .hex { font-family: ui-monospace, Consolas, monospace; font-size: 11px; color: var(--muted-foreground); }
+  .swatch .ratio { font-size: 11px; color: var(--ink-muted); }
+  .swatch .ratio b { color: var(--muted-foreground); font-weight: 600; }
+  .rampa { display: grid; grid-template-columns: repeat(10, 1fr); border-radius: 0.75rem; overflow: hidden; border: 1px solid var(--border); margin-top: 16px; }
+  .rampa div { height: 44px; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 4px; font-size: 10px; font-weight: 600; letter-spacing: .04em; }
+  .rampa div:nth-child(-n+4) { color: var(--brand-950); }
+  .rampa div:nth-child(n+5) { color: var(--brand-50); }
+
+  /* ═══ Tipografia ═══ */
+  .tipo { display: grid; gap: 0; border: 1px solid var(--border); border-radius: 1rem; background: var(--card); overflow: hidden; }
+  .tipo > div { display: grid; grid-template-columns: 220px 1fr; gap: 16px; align-items: baseline; padding: 14px 18px; border-bottom: 1px solid var(--row-border); }
+  .tipo > div:last-child { border-bottom: 0; }
+  .tipo .rot { font-size: 11px; color: var(--ink-muted); font-family: ui-monospace, Consolas, monospace; }
+  .t-pagina { font-family: var(--font-title); font-size: 24px; font-weight: 700; }
+  .t-dialogo { font-size: 18px; font-weight: 600; }
+  .t-cartao { font-family: var(--font-title); font-size: 15px; font-weight: 700; }
+  .t-menu { font-size: 14px; }
+  .t-corpo { font-size: 13px; }
+  .t-rotulo { font-size: 12px; font-weight: 600; color: var(--muted-foreground); }
+  .t-cab { font-size: 11px; text-transform: uppercase; letter-spacing: .14em; font-weight: 600; color: var(--ink-muted); }
+  .t-grupo { font-size: 10px; text-transform: uppercase; letter-spacing: .16em; font-weight: 600; color: var(--ink-muted); }
+
+  /* ═══ Primitivos (design.md §7) ═══ */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    height: 36px; padding: 0 14px; border-radius: 0.75rem; border: 1px solid transparent;
+    font-weight: 600; font-size: 13px; cursor: pointer; white-space: nowrap;
+    transition: background-color 120ms, color 120ms, border-color 120ms;
+  }
+  .btn svg { width: 14px; height: 14px; }
+  .btn-primary { background: var(--primary); color: var(--primary-foreground); }
+  .btn-primary:hover { filter: brightness(1.06); }
+  .btn-secondary { background: var(--card); color: var(--foreground); border-color: var(--border); }
+  .btn-secondary:hover { background: var(--accent); }
+  .btn-ghost { background: transparent; color: var(--muted-foreground); }
+  .btn-ghost:hover { background: var(--accent); color: var(--accent-foreground); }
+  .btn-danger { background: var(--destructive-btn); color: #fff; }
+  .btn-sm { height: 32px; font-size: 12px; padding: 0 10px; }
+  .btn[disabled] { opacity: .5; cursor: not-allowed; }
+  .iconbtn { width: 32px; height: 32px; border-radius: 0.5rem; border: 0; background: transparent; color: var(--primary); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
+  .iconbtn:hover { background: var(--accent); }
+  .iconbtn.danger { color: var(--destructive); }
+  .iconbtn.danger:hover { background: var(--destructive-bg); }
+  .iconbtn svg { width: 15px; height: 15px; }
+
+  .field { display: grid; gap: 6px; }
+  .field label { font-size: 12px; font-weight: 600; color: var(--muted-foreground); }
+  .input {
+    height: 36px; width: 100%; padding: 0 12px; border-radius: 0.75rem;
+    border: 1px solid var(--input); background: var(--card); color: var(--foreground); font-size: 13px;
+  }
+  .input::placeholder { color: var(--ink-muted); }
+  .input:focus { outline: 0; border-color: var(--brand-400); box-shadow: 0 0 0 2px color-mix(in srgb, var(--ring) 25%, transparent); }
+  .input[disabled] { background: var(--muted); color: var(--ink-muted); }
+  .search { position: relative; }
+  .search svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 14px; height: 14px; color: var(--ink-muted); }
+  .search .input { padding-left: 32px; }
+  .select { display: inline-flex; align-items: center; justify-content: space-between; gap: 10px; height: 36px; min-width: 170px; padding: 0 10px 0 12px; border-radius: 0.75rem; border: 1px solid var(--input); background: var(--card); cursor: pointer; }
+  .select span:first-child { color: var(--foreground); }
+  .select svg { width: 14px; height: 14px; color: var(--ink-muted); }
+
+  .badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 0.75rem; border: 1px solid transparent; font-size: 12px; font-weight: 500; white-space: nowrap; }
+  .badge-neutral { background: var(--muted); color: var(--muted-foreground); }
+  .badge-accent { background: var(--accent); color: var(--accent-foreground); }
+  .badge-attention { background: var(--attention-bg); color: var(--attention); }
+  .badge-alert { background: var(--destructive-bg); color: var(--destructive); }
+  .badge-outline { border-color: var(--border); color: var(--muted-foreground); }
+
+  .alert { display: grid; grid-template-columns: 16px 1fr; gap: 2px 12px; padding: 12px 16px; border-radius: 1rem; font-size: 13px; }
+  .alert svg { width: 16px; height: 16px; margin-top: 2px; }
+  .alert b { font-weight: 600; }
+  .alert p { opacity: .9; grid-column: 2; }
+  .alert-default { background: var(--muted); color: var(--foreground); }
+  .alert-success { background: var(--accent); color: var(--accent-foreground); }
+  .alert-warn { background: var(--attention-bg); color: var(--attention); }
+  .alert-error { background: var(--destructive-bg); color: var(--destructive); }
+
+  .status { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+  .status i { width: 6px; height: 6px; border-radius: 999px; background: currentColor; }
+  .status-live { color: var(--primary); }
+  .status-off { color: var(--muted-foreground); }
+  .status-off i { background: var(--ink-muted); }
+  .status-attention { color: var(--attention); }
+  .status-alert { color: var(--destructive); }
+
+  /* ═══ Vocabulário do produto (design.md §8) ═══ */
+  .grid-comp { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 1.5rem; padding: 20px; box-shadow: 0 1px 2px rgba(0,0,0,.05); display: grid; gap: 14px; align-content: start; }
+  .card h3 { font-family: var(--font-title); font-size: 15px; font-weight: 700; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .stack { display: grid; gap: 10px; }
+
+  .page-header { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 24px; margin-bottom: 16px; }
+  .page-header .module { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--primary); }
+  .page-header h3 { font-family: var(--font-title); font-size: 24px; font-weight: 700; margin-top: 4px; }
+  .page-header .desc { color: var(--muted-foreground); margin-top: 4px; }
+  .page-header .meta { color: var(--muted-foreground); font-size: 12px; margin-top: 8px; display: flex; gap: 8px; align-items: center; }
+  .meta .stat { font-family: var(--font-title); font-weight: 700; color: var(--foreground); }
+  .meta .dot { color: var(--ink-muted); }
+
+  .panel { background: var(--card); border: 1px solid var(--border); border-radius: 1rem; }
+  .toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--row-border); }
+  .toolbar .search { flex: 1; min-width: 220px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding: 8px 16px; border-bottom: 1px solid var(--row-border); }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 3px 6px 3px 10px; border-radius: 0.75rem; background: var(--accent); color: var(--accent-foreground); font-size: 12px; font-weight: 500; }
+  .chip b { font-weight: 600; }
+  .chip button { border: 0; background: transparent; color: inherit; width: 18px; height: 18px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; }
+  .chip button:hover { background: color-mix(in srgb, currentColor 15%, transparent); }
+  .chip svg { width: 12px; height: 12px; }
+  .chips .limpar { margin-left: auto; }
+
+  .tabela-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { text-align: left; padding: 10px 16px; font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-muted); background: var(--card); border-bottom: 1px solid var(--row-border); white-space: nowrap; }
+  td { padding: 12px 16px; vertical-align: top; border-bottom: 1px solid var(--row-border); }
+  tr:last-child td { border-bottom: 0; }
+  tbody tr:hover td { background: var(--accent); }
+  .num { text-align: right; }
+  .row-title { font-weight: 600; color: var(--foreground); }
+  .row-meta { color: var(--muted-foreground); font-size: 12px; margin-top: 2px; }
+  .dash { color: var(--ink-muted); }
+  .acoes { display: inline-flex; gap: 2px; }
+  .pagination { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 16px; border-top: 1px solid var(--row-border); color: var(--muted-foreground); font-size: 12px; }
+  .pagination .btns { display: inline-flex; gap: 6px; }
+
+  /* ═══ Login (design.md §10.1) ═══ */
+  .login { display: grid; grid-template-columns: 1fr; gap: 24px; padding: 32px; border-radius: 1.5rem; background: var(--background); border: 1px solid var(--border-soft); }
+  @media (min-width: 880px) { .login { grid-template-columns: 1.1fr 1fr; align-items: center; padding: 48px; } }
+  .login .esq { display: grid; gap: 20px; }
+  .login h3 { font-family: var(--font-title); font-size: 34px; font-weight: 800; line-height: 1.1; }
+  @media (min-width: 640px) { .login h3 { font-size: 44px; } }
+  .login .contexto { background: var(--brand-50); color: var(--brand-800); border-radius: 1.5rem; padding: 18px 20px; display: grid; gap: 6px; }
+  .login .contexto b { font-weight: 700; }
+  .login .cartao { justify-self: center; width: 100%; max-width: 420px; background: var(--card); border: 1px solid var(--border); border-radius: 1.5rem; padding: 32px; box-shadow: 0 1px 2px rgba(0,0,0,.05); display: grid; gap: 16px; }
+  /* Monograma sobre o quadrado accent: no claro é o verde da marca (#45963d,
+     4,1:1 sobre #eef7ec); no escuro esse verde some sobre #1f3120 (2,6:1), então
+     o monograma toma a cor do par tonal do quadrado, accent-foreground (9,2:1).
+     A marca é inline justamente para herdar a cor do lugar (design.md §11). */
+  .monograma-box { width: 48px; height: 48px; border-radius: 1rem; background: var(--accent); color: var(--mark-on-accent); display: grid; place-items: center; }
+  .monograma-box svg { width: 26px; height: auto; }
+  .login .cartao h4 { font-family: var(--font-title); font-size: 20px; font-weight: 700; }
+  .login .cartao .hint { color: var(--muted-foreground); font-size: 12px; }
+
+  /* ═══ Marca ═══ */
+  .marca { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+  .marca .amostra { height: 96px; display: grid; place-items: center; border-radius: 1rem 1rem 0 0; }
+  .marca .card { padding: 0; overflow: hidden; gap: 0; }
+  .marca .legenda { padding: 12px 16px; display: grid; gap: 2px; }
+  .marca .legenda b { font-weight: 600; }
+  .marca .legenda span { color: var(--muted-foreground); font-size: 12px; }
+  .marca img { height: 22px; width: auto; }
+  .marca svg.mono { height: 34px; width: auto; }
+
+  .layout-sample { display: grid; grid-template-columns: 200px 1fr; border: 1px solid var(--border); border-radius: 1rem; overflow: hidden; background: var(--card); min-height: 220px; }
+  .nav { border-right: 1px solid var(--row-border); padding: 14px 10px; display: flex; flex-direction: column; gap: 4px; }
+  .nav .grupo { font-size: 10px; text-transform: uppercase; letter-spacing: .16em; font-weight: 600; color: var(--ink-muted); padding: 8px 10px 4px; }
+  .nav a { display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: 0.75rem; color: var(--muted-foreground); text-decoration: none; font-size: 14px; }
+  .nav a.ativo { background: var(--accent); color: var(--primary); font-weight: 600; }
+  .nav a:hover { background: var(--accent); }
+  .nav svg { width: 15px; height: 15px; }
+  .nav .rodape { margin-top: auto; display: flex; align-items: center; gap: 8px; padding: 8px 6px 0; border-top: 1px solid var(--row-border); }
+  .nav .iniciais { width: 30px; height: 30px; border-radius: 0.75rem; background: var(--primary); color: var(--primary-foreground); display: grid; place-items: center; font-weight: 700; font-size: 12px; }
+  .nav .quem { flex: 1; min-width: 0; font-size: 12px; }
+  .nav .quem div:last-child { color: var(--muted-foreground); font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .conteudo { padding: 18px 20px; background: var(--background); }
+  @media (max-width: 640px) { .layout-sample { grid-template-columns: 1fr; } .nav { flex-direction: row; flex-wrap: wrap; } .nav .rodape { margin-top: 0; border: 0; } .tipo > div { grid-template-columns: 1fr; gap: 4px; } }
+
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="bn" viewBox="0 0 757.5 663.06" fill="currentColor">
+    <path d="M332.36,271.85c0,30.66-22.37,53.87-52.21,58.84v1.66c29.84,4.97,52.21,28.18,52.21,58.84v152.5c0,77.91-42.27,119.35-120.18,119.35H13.26c-8.29,0-13.26-4.97-13.26-13.26V13.26C0,4.14,4.97,0,13.26,0h198.91c77.91,0,120.18,41.44,120.18,119.35v152.51ZM222.13,142.56c0-21.55-10.77-33.15-33.15-33.15h-75.42v167.42h75.42c21.55,0,33.15-11.61,33.15-32.33v-101.94ZM222.13,419.38c0-21.55-10.77-33.15-33.15-33.15h-75.42v167.42h75.42c21.55,0,33.15-10.77,33.15-33.15v-101.12Z"/>
+    <path d="M744.24,0c8.29,0,13.26,4.97,13.26,13.26v636.53c0,8.29-4.97,13.26-13.26,13.26h-82.05c-7.46,0-12.43-3.32-14.92-10.77l-126.81-353.91h-4.15v351.42c0,8.29-4.14,13.26-13.26,13.26h-86.2c-8.29,0-13.26-4.97-13.26-13.26V13.26c0-8.28,4.97-13.26,13.26-13.26h82.05c7.46,0,12.43,3.32,14.92,10.77l125.98,352.25h4.97V13.26c0-8.28,4.14-13.26,13.26-13.26h86.2Z"/>
+  </symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
+  <symbol id="i-monitor" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+  <symbol id="i-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+  <symbol id="i-sliders" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 4h-7M10 4H3M21 12h-9M8 12H3M21 20h-5M12 20H3M14 2v4M8 10v4M16 18v4"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-pencil" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.8 2.8 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v6M14 11v6"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0ZM12 9v4M12 17h.01"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></symbol>
+  <symbol id="i-logout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></symbol>
+</svg>
+
+<header class="topbar">
+  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWEAAABFCAYAAACbtVdDAAAACXBIWXMAAAsSAAALEgHS3X78AAAJOElEQVR4nO2dT37byBGFn/3LnroBeQM6BwgML4KtlBMIs8RqNCcY+gTRKlgaugG9xWZgXCDSDcgTRDyBsmB7nNgy0AWiUEXwfUur3XhoNB4L1f/evLy8ICuTFYAVFKiLthmrrqxMrgC8G6u+ATzXRfsYUzArk7SvzCltE9sWsdfQ7AOR7Oqi3fUVirzv6Of0k2us0N8Wkr4Qo/mxLtrnmPq+q3uFbq2x7ZpKrz0ivRq1+6eFT3295pu//+tv7wA0ABZjiXiFQ7jGFsB2YGe7CnWsR1Um57e6aO+7CmRlUgG4jajrM4Bc2h7CtnioizaPqG8H3T4Qw1+7jE143x/rot1IBWRlInkffqmLtuqpL1bzE4BU0hcitR5CvV3tWiGuv2rRqVH4TE7V0WA6n3qoizZ/C+Ae+je3AHAN4BOAXVYmmwF15LA3YAC46vpjiChiO/Q1gM0ADXeIb4vbiCjnDvYGDAA3PX+X3PfvWZn01fcakvfhU0SZCnGa1zi+vFGEyLBBv9YFgCaUf62eFLYGDBw1dgU2U3jUVx2n+pT43Xw74CKnssDxBWnCr0YskrLnxBCjIHF4aFtJv5UEGSvEG9MCtqmmc2SoT4mxMOGvvIfgl3/GLI3zcXPmVvsFIrNH3acsTRgA1gND/rmRWwuYMR6iYXLeqPqUtQkDx5B/ZS3CGBqFHmxbMgZqPuXBhIFjMvuSWQwcRCL9XPNHnoyEyjvqxYRpQExJaML+RcYg16jUiwkvOYCCa7aBGrm1ADILVKbIejFhwHYlnBcYsemwZkqCjIHGTCZPJnwuUaB4FY2AXLHuc2CrWPeljzu8Slg6+2As44ALfj5/GfB/PvT8/QpHM7kW1vsO476EfToHMeYa81d4n5XJKmatvzEabXvSfg8R3OCCX/Qu6qLNw9LlGP4QVP2EuDaP2t9CQEz/XOG4WnU54nUHITbhSBPaZmWyhdyIR0PZLDW5QfcSTnPOtG2XWZm8Uzb6s0Ww0ZOk2meLviK4ly2ARxgbsWY6wrWROCa3FjBjGAmTPwkb9FTWOtRM+EyjJQ+sw65RZHw48Enc4WlgjnwjtxYwU7gohriDJuwTGoUebFviCpqwT7izmh7cWY24gibsl9xawIxhNEzcQBP2C41CD7YtcQNN2C8cRNKDO6sRN9CEfZNbC5gx/IEjLqAJ+4Y7q+mRWwsgBKAJnwOM2HTgzmrEBTRh/+TWAmYMlzETc9RMmEtvR+M9IzY1+JVBzNGMhNnBx4NtqcOSwQKxZsh+wp2EgaQcwO9j133B5OCudFrcgSkfYojYhLMyedEQAmA3ZmUj6Hyqi9ZLlLT2tBfuCG37UBdtPoaWEeBXBjHF08CcC4P5H9ZZmXgauMmtBYzIbVYmubWIABfFEFO8mPAXL1Hed0wxR3cfWW5uRrGa4BpPkeVyTRGEdOHBhC/6kD8cd/aPMWLurCYnNo/ORTGXi/lztzbhPYDUaRQ8JbEHnOaaImbIDvHR8Ny+NEgPYWZMbq1j9NkRkewBbOqirYyu740KwK8R5WgUcu4BfIool8PBeWPkdCK+GFc4nu6eA1goy+nFyoSXADZZmYBGDNRF+5iVyROAdU9RDiLJ2SLOhLkoZj78YS1AgmU6YgngU1YmlaEGT1SR5XJFDbMjnKj7ObI4f+DI5FjnhIHjdKWNtQgHxOaFrzHNzII5Icm5mw/UEL9onCLvwYSBy54dAQCoi3YH4Etk8VtFKbMjpLwOEUXX6E8JkcsldpBXhBcTXjicfnVAfAQ1FtXE17PiCdMvw576WZL5UWlUOmRg7mPP369wzK0thfWmAJoBen5Gn84+tgZT52IHkaw5tW3vQ652SrbgFwQZzgFeTLgu2k1fmZDjbWD4aRej0xt10T5nZfIZx7yvW860bbdZmewhDw4IAY5TalUCB5V0RBC70aj7AqisBcwYpiTIEB7qolVLn2nmhBvFumdLXbRbxA0iETmVtQBydqjv+KdmwgY5vznBiE2BkONXGeEms2MP4B9TbLnqZXYE+X8qawEzprIWQM6CTfgqVcdq2TLpoC7ahoNIamwB/NNaBNGjLto33/9b2Kzn34JqUkz0g81I2C9MSSggXBRDZkJIRUnGWlIlKT9AE/YLz5TTo7IWQExoBGUnOwSWJuyUELFxEEkHfmVcJtLnnmqI+B6asG8qawFzRLizGpkPjbB8qqDhB2jCvmHEpkdlLYBMS/i6jD3TEaAJk9BpGLEpwEUxF0sjKLuYIi9ME/YPo2E92LaXRyMsr77Rv5oJ86iY0aBR6FFZCyCT425wTjMSThXrvhjCINKDtY45Ek5JkOQI1REEL5NMn5ob4X2SzDp6r6XlKyomHPIonOc6HoyG9fDWttusTDqPWArv12YaObOkkRTWPnBCvGw5K5Omp8gVhu0jPOqGPxE6h3I39WbvYS/cAxwczw2ote0zgNxg46cKwK8TX7OLNYD/ZGXys1V9Q98v8o0Gsmd+A8VdIYfsHaEVno9tbFo6bzC+1hg8nQyh2baVUt2vUhftY1YmT/BnbGO3MXc1/EYjLJ8qaPgTT7Mj2Em6uYT0zsroupVi3TvFuqMxOKrLLeFrS7J/yLovRXQKbkyYnaSb0D6uBpFmhGZe2EO/5vL3H2mE5VMFDQD8mDAXJMThbRBpFigvivHwzBprAQ5phOVTBQ0A/Jiwh456DlxCSsIKlT7oZOvMyvj67gjTEyWoLdrwYML7umgraxHnAHdWU0UzELD88fzCVN9PkXz9LLUWoHkwYfVlgTOjshYwRzQXxYR9KixSbgcAucF1z4VGWD5V0GBuwr/wV1pMZS1gxmhGwzmm/Yo5AEjD1xN5nUZYPlXQYGbCBwAfmIaQw71w9dDcWS08txTTLEHf42jADHA68HLk0VtMO4VmD+AjgNWAxPi5dKgdZA92yH1VgrIH9M9V7fv7VOx6/i5pq5j7fo1KUFYU2dZF+xyOUP8AnR/SPYDf6qJdKRqw5J7H0iCpR/q1UQnKxhy8K+6jb15eXpCVyT30NgRpcFyI0ZzaMbIyyWGf4+pdtizYO6Ma+jUguEbUMmvlPhBD1LJlQR8YvLw88honL7MOCwBSHNt9hWGLVRqM9H7FEDRXOC6f7uKxLtq7Ea8b0z8HPZOsTO4QNzYVdU/SPvpfw4L2na0E7y0AAAAASUVORK5CYII=" alt="BENENUTRI" style="height:20px;width:auto">
+  <div class="grow">
+    <div class="titulo">Design System Benenutri</div>
+    <div class="sub">Tokens, componentes e telas do kit, nos dois temas. Alterne aqui e tudo abaixo muda sem trocar um componente.</div>
+  </div>
+  <div class="segment" role="group" aria-label="Tema">
+    <button type="button" data-tema="light" aria-pressed="false"><svg><use href="#i-sun"/></svg>Claro</button>
+    <button type="button" data-tema="dark" aria-pressed="false"><svg><use href="#i-moon"/></svg>Escuro</button>
+    <button type="button" data-tema="system" aria-pressed="false"><svg><use href="#i-monitor"/></svg>Sistema</button>
+  </div>
+</header>
+
+<main>
+
+  <section id="tokens">
+    <header>
+      <div class="eyebrow">design.md §2 · §2.1</div>
+      <h2>Tokens de cor</h2>
+      <p>Uma fonte única: o bloco <code>:root</code> define o claro, o <code>.dark</code> redefine os mesmos nomes. O hex e o contraste abaixo são lidos da página no tema ativo, não digitados.</p>
+    </header>
+    <div class="swatches" id="swatches"></div>
+    <div class="rampa" id="rampa" aria-label="Rampa da marca brand-50 a brand-950"></div>
+    <p class="nota" style="margin-top:10px">Rampa <code>brand-*</code>: no escuro ela é invertida de propósito, para <code>bg-brand-50</code> seguir sendo "superfície sutil" e <code>text-brand-800</code> seguir sendo "texto forte". O <code>brand-700</code> é o próprio <code>--primary</code>.</p>
+  </section>
+
+  <section id="tipografia">
+    <header>
+      <div class="eyebrow">design.md §4</div>
+      <h2>Tipografia</h2>
+      <p>Manrope nos títulos e números em destaque; Work Sans em todo o resto. O painel é denso, então o corpo é 13px e quase tudo fica abaixo do padrão do Tailwind.</p>
+    </header>
+    <div class="tipo">
+      <div><span class="rot">font-title text-2xl font-bold</span><span class="t-pagina">Atendimentos do Programa Ativa</span></div>
+      <div><span class="rot">text-lg font-semibold</span><span class="t-dialogo">Registrar visita domiciliar</span></div>
+      <div><span class="rot">font-title text-[15px] font-bold</span><span class="t-cartao">Pacientes aguardando agendamento</span></div>
+      <div><span class="rot">text-[14px]</span><span class="t-menu">Item de menu lateral</span></div>
+      <div><span class="rot">text-[13px] · corpo padrão</span><span class="t-corpo">Célula de tabela, campo, botão e descrição. Números alinham com figuras tabulares: 1.284 · 0,75 · R$ 1.980,00.</span></div>
+      <div><span class="rot">text-[12px] font-semibold</span><span class="t-rotulo">Rótulo de campo</span></div>
+      <div><span class="rot">text-[11px] uppercase tracking-[0.14em]</span><span class="t-cab">Cabeçalho de tabela</span></div>
+      <div><span class="rot">text-[10px] uppercase tracking-[0.16em]</span><span class="t-grupo">Título de grupo do menu</span></div>
+    </div>
+  </section>
+
+  <section id="componentes">
+    <header>
+      <div class="eyebrow">design.md §7 · §8</div>
+      <h2>Primitivos e vocabulário</h2>
+      <p>Cada bloco usa só tokens. No escuro, o botão destrutivo mantém texto branco sobre <code>destructive/60</code>, como o shadcn gera; foi um dos pares medidos ao escolher o vermelho.</p>
+    </header>
+    <div class="grid-comp">
+      <div class="card">
+        <h3>Botões</h3>
+        <div class="row">
+          <button class="btn btn-primary"><svg><use href="#i-plus"/></svg>Novo atendimento</button>
+          <button class="btn btn-secondary">Exportar</button>
+          <button class="btn btn-ghost">Cancelar</button>
+          <button class="btn btn-danger">Encerrar</button>
+        </div>
+        <div class="row">
+          <button class="btn btn-secondary btn-sm">Pequeno</button>
+          <button class="btn btn-primary btn-sm" disabled title="Sem permissão para esta ação">Sem permissão</button>
+          <span class="iconbtn" title="Editar" aria-label="Editar"><svg><use href="#i-pencil"/></svg></span>
+          <span class="iconbtn danger" title="Remover" aria-label="Remover"><svg><use href="#i-trash"/></svg></span>
+        </div>
+        <p class="nota">O padrão é <code>secondary</code>; só a ação principal é <code>primary</code>. Sem permissão, o botão desabilita, não some.</p>
+      </div>
+      <div class="card">
+        <h3>Campos</h3>
+        <div class="stack">
+          <div class="field"><label>Nome do paciente</label><input class="input" value="Maria Aparecida dos Santos"></div>
+          <div class="search"><svg><use href="#i-search"/></svg><input class="input" placeholder="Buscar por nome ou CPF"></div>
+          <div class="field"><label>Município</label><span class="select"><span>Santos</span><svg><use href="#i-chevron"/></svg></span></div>
+          <div class="field"><label>Convênio</label><input class="input" disabled value="Não se aplica (SUS)"></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Status e selos</h3>
+        <div class="row">
+          <span class="status status-live"><i></i>Agendado</span>
+          <span class="status status-off"><i></i>Inativa</span>
+          <span class="status status-attention"><i></i>Ligação vence hoje</span>
+          <span class="status status-alert"><i></i>3 dias de atraso</span>
+        </div>
+        <div class="row">
+          <span class="badge badge-neutral">Retorno</span>
+          <span class="badge badge-accent">Primeira visita</span>
+          <span class="badge badge-attention">Amostra pendente</span>
+          <span class="badge badge-alert">Venda não efetivada</span>
+          <span class="badge badge-outline">SUS</span>
+        </div>
+        <p class="nota"><code>Status</code> (ponto + texto) dentro de tabela; <code>Badge</code> só fora dela. Inativo é cinza, nunca vermelho.</p>
+      </div>
+      <div class="card">
+        <h3>Avisos</h3>
+        <div class="stack">
+          <div class="alert alert-success"><svg><use href="#i-check"/></svg><b>Visita registrada.</b><p>A ligação de 7 dias ficou prevista para 16/09/2026.</p></div>
+          <div class="alert alert-warn"><svg><use href="#i-alert"/></svg><b>Município sem modalidade.</b><p>Praia Grande não aceita agendamento até que uma modalidade seja cadastrada.</p></div>
+          <div class="alert alert-error"><svg><use href="#i-alert"/></svg><b>Choque de agenda.</b><p>Ana já tem atendimento presencial em 03/09/2026 às 14h.</p></div>
+          <div class="alert alert-default"><svg><use href="#i-info"/></svg><b>Ambiente de desenvolvimento.</b><p>Senha única: mitra123.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tela">
+    <header>
+      <div class="eyebrow">design.md §9 · §10</div>
+      <h2>Listagem operacional</h2>
+      <p>A tela inteira se escreve com o vocabulário do <code>page.tsx</code>: cabeçalho, painel com filtros colados na tabela, linhas sem zebra, identificador discreto, número à direita e travessão onde o dado não existe.</p>
+    </header>
+
+    <div class="layout-sample">
+      <nav class="nav" aria-label="Menu">
+        <div class="grupo">Atendimento</div>
+        <a href="#tela" class="ativo"><svg><use href="#i-list"/></svg>Atendimentos</a>
+        <a href="#tela"><svg><use href="#i-users"/></svg>Pacientes</a>
+        <a href="#tela"><svg><use href="#i-cal"/></svg>Agenda</a>
+        <div class="rodape">
+          <div class="iniciais">MP</div>
+          <div class="quem"><div>Marina Prado</div><div>marina@benenutri.com</div></div>
+          <span class="iconbtn" title="Tema escuro" aria-label="Tema escuro" id="toggle-menu"><svg><use href="#i-moon"/></svg></span>
+          <span class="iconbtn danger" title="Sair" aria-label="Sair"><svg><use href="#i-logout"/></svg></span>
+        </div>
+      </nav>
+      <div class="conteudo">
+        <div class="page-header">
+          <div>
+            <div class="module">Programa Ativa</div>
+            <h3>Atendimentos</h3>
+            <div class="desc">Quadro de acompanhamento pelas quatro etapas.</div>
+            <div class="meta"><span><span class="stat">23</span> atendimentos</span><span class="dot">·</span><span><span class="stat">4</span> atrasados</span><span class="dot">·</span><span><span class="stat">2</span> encerrados</span></div>
+          </div>
+          <button class="btn btn-primary"><svg><use href="#i-plus"/></svg>Novo atendimento</button>
+        </div>
+
+        <div class="panel">
+          <div class="toolbar">
+            <div class="search"><svg><use href="#i-search"/></svg><input class="input" placeholder="Buscar paciente"></div>
+            <span class="select"><span>Todas as enfermeiras</span><svg><use href="#i-chevron"/></svg></span>
+            <span class="select"><span>Santos</span><svg><use href="#i-chevron"/></svg></span>
+            <button class="btn btn-secondary"><svg><use href="#i-sliders"/></svg>Mais filtros <span class="badge badge-accent" style="margin-left:2px">1</span></button>
+          </div>
+          <div class="chips">
+            <span class="chip">Município: <b>Santos</b><button type="button" aria-label="Remover filtro"><svg><use href="#i-x"/></svg></button></span>
+            <span class="chip">Etapa: <b>Ligação 7 dias</b><button type="button" aria-label="Remover filtro"><svg><use href="#i-x"/></svg></button></span>
+            <button class="btn btn-ghost btn-sm limpar">Limpar tudo</button>
+          </div>
+          <div class="tabela-wrap">
+            <table>
+              <thead><tr><th>Paciente</th><th>Código</th><th>Etapa</th><th>Enfermeira</th><th>Agendado em</th><th class="num">Atraso</th><th class="num">Valor</th><th></th></tr></thead>
+              <tbody>
+                <tr><td><div class="row-title">Maria Aparecida dos Santos</div><div class="row-meta">Santos · SUS · 68 anos</div></td><td><span class="code">AT-0231</span></td><td><span class="status status-alert"><i></i>Ligação 7 dias</span></td><td>Ana Beatriz</td><td>27/08/2026 14:00</td><td class="num">3 dias</td><td class="num">R$ 180,00</td><td><span class="acoes"><span class="iconbtn" title="Editar"><svg><use href="#i-pencil"/></svg></span><span class="iconbtn danger" title="Encerrar"><svg><use href="#i-trash"/></svg></span></span></td></tr>
+                <tr><td><div class="row-title">José Carlos Ferreira</div><div class="row-meta">Santos · Convênio Unimed · 71 anos</div></td><td><span class="code">AT-0228</span></td><td><span class="status status-attention"><i></i>Ligação 7 dias</span></td><td>Beatriz Lima</td><td>29/08/2026 09:30</td><td class="num">Hoje</td><td class="num">R$ 180,00</td><td><span class="acoes"><span class="iconbtn" title="Editar"><svg><use href="#i-pencil"/></svg></span><span class="iconbtn danger" title="Encerrar"><svg><use href="#i-trash"/></svg></span></span></td></tr>
+                <tr><td><div class="row-title">Teresa Cristina Almeida</div><div class="row-meta">Santos · SUS · 59 anos</div></td><td><span class="code">AT-0226</span></td><td><span class="status status-live"><i></i>Ligação 7 dias</span></td><td>Ana Beatriz</td><td>01/09/2026 10:00</td><td class="num"><span class="dash">—</span></td><td class="num"><span class="dash">—</span></td><td><span class="acoes"><span class="iconbtn" title="Editar"><svg><use href="#i-pencil"/></svg></span><span class="iconbtn danger" title="Encerrar"><svg><use href="#i-trash"/></svg></span></span></td></tr>
+                <tr><td><div class="row-title">Antônio Marques Vieira</div><div class="row-meta">Santos · SUS · 64 anos</div></td><td><span class="code">AT-0219</span></td><td><span class="status status-off"><i></i>Encerrado</span></td><td>Beatriz Lima</td><td>18/08/2026 15:00</td><td class="num"><span class="dash">—</span></td><td class="num">R$ 80,00</td><td><span class="acoes"><span class="iconbtn" title="Editar"><svg><use href="#i-pencil"/></svg></span><span class="iconbtn danger" title="Encerrar"><svg><use href="#i-trash"/></svg></span></span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pagination"><span aria-live="polite">Página 1 de 3 · 11 atendimentos</span><span class="btns"><button class="btn btn-secondary btn-sm" disabled>Anterior</button><button class="btn btn-secondary btn-sm">Próxima</button></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="login">
+    <header>
+      <div class="eyebrow">design.md §10.1 · §11</div>
+      <h2>Tela de login</h2>
+      <p>Duas metades: assinatura, manchete e bloco de contexto em <code>brand-50</code>; cartão com o monograma num quadrado <code>accent</code>. A marca fica no verde dela, não no verde da interface.</p>
+    </header>
+    <div class="login">
+      <div class="esq">
+        <img src="data:image/png;base64,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" alt="BENENUTRI" style="height:22px;width:auto">
+        <h3>Cada paciente ostomizado acompanhado do primeiro contato à alta.</h3>
+        <div class="contexto"><b>Programa Ativa</b><span>Agenda, visitas e ligações de acompanhamento em um único quadro para a Central, as enfermeiras e a gestão.</span></div>
+      </div>
+      <div class="cartao">
+        <div class="monograma-box"><svg><use href="#bn"/></svg></div>
+        <div><h4>Entrar</h4><div class="hint">Use o e-mail cadastrado pela Central.</div></div>
+        <div class="field"><label>E-mail</label><input class="input" value="marina@benenutri.com"></div>
+        <div class="field"><label>Senha</label><input class="input" type="password" value="mitra123"></div>
+        <button class="btn btn-primary" style="width:100%">Entrar</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="marca">
+    <header>
+      <div class="eyebrow">design.md §11</div>
+      <h2>Marca nos dois temas</h2>
+      <p>O verde da marca (<code>#45963d</code>) não é o <code>--primary</code>. A assinatura PNG fica como está; o monograma herda <code>currentColor</code>, então muda de cor com o lugar, não com o tema.</p>
+    </header>
+    <div class="marca">
+      <div class="card"><div class="amostra" style="background:var(--card)"><img src="data:image/png;base64,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" alt="BENENUTRI"></div><div class="legenda"><b>Assinatura</b><span>PNG 3× · menu expandido, barra mobile, login</span></div></div>
+      <div class="card"><div class="amostra brand" style="background:var(--card)"><svg class="mono"><use href="#bn"/></svg></div><div class="legenda"><b>Monograma na marca</b><span>SVG inline · <code>color: #45963d</code></span></div></div>
+      <div class="card"><div class="amostra" style="background:var(--primary);color:var(--primary-foreground)"><svg class="mono"><use href="#bn"/></svg></div><div class="legenda"><b>Monograma sobre primary</b><span>avatar e menu recolhido · herda <code>currentColor</code></span></div></div>
+      <div class="card"><div class="amostra" style="background:var(--accent);color:var(--mark-on-accent)"><svg class="mono"><use href="#bn"/></svg></div><div class="legenda"><b>Monograma sobre accent</b><span>login · verde da marca no claro, <code>accent-foreground</code> no escuro</span></div></div>
+      <div class="card"><div class="amostra" style="background:var(--muted)"><svg width="40" height="40" viewBox="0 0 32 32"><rect width="32" height="32" rx="7" fill="#156b16"/><g fill="#fff" style="color:#fff" transform="translate(6 7.25) scale(0.026403)"><use href="#bn" width="757.5" height="663.06"/></g></svg></div><div class="legenda"><b>Favicon</b><span>monograma branco sobre <code>#156b16</code> · não muda com o tema</span></div></div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    var KEY = 'theme';
+    var media = window.matchMedia('(prefers-color-scheme: dark)');
+
+    function salvo() { try { return localStorage.getItem(KEY) || 'system'; } catch (e) { return 'system'; } }
+    function aplicar(t) {
+      if (t === 'light' || t === 'dark') root.setAttribute('data-theme', t); else root.removeAttribute('data-theme');
+      document.querySelectorAll('.segment button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.tema === t)); });
+      var escuro = t === 'dark' || (t === 'system' && media.matches);
+      var tm = document.getElementById('toggle-menu');
+      tm.querySelector('use').setAttribute('href', escuro ? '#i-sun' : '#i-moon');
+      var rotulo = escuro ? 'Tema claro' : 'Tema escuro';
+      tm.title = rotulo;
+      tm.setAttribute('aria-label', rotulo);
+      atualizarTokens();
+    }
+    function definir(t) { try { localStorage.setItem(KEY, t); } catch (e) {} aplicar(t); }
+    document.querySelectorAll('.segment button').forEach(function (b) { b.addEventListener('click', function () { definir(b.dataset.tema); }); });
+    document.getElementById('toggle-menu').addEventListener('click', function () {
+      var escuro = root.getAttribute('data-theme') === 'dark' || (!root.getAttribute('data-theme') && media.matches);
+      definir(escuro ? 'light' : 'dark');
+    });
+    media.addEventListener('change', function () { if (salvo() === 'system') aplicar('system'); });
+
+    /* ── tokens lidos da página ── */
+    var TOKENS = [
+      ['background', 'fundo da tela', 'foreground'],
+      ['card', 'superfície', 'foreground'],
+      ['muted', 'área rebaixada', 'muted-foreground'],
+      ['accent', 'realce e hover', 'accent-foreground'],
+      ['foreground', 'texto (ink)', null],
+      ['muted-foreground', 'ink-secondary', null],
+      ['ink-muted', 'só rótulo em caixa alta', null],
+      ['primary', 'verde da interface', 'primary-foreground'],
+      ['destructive', 'risco / alert', null],
+      ['attention', 'atenção', null],
+      ['border', 'rule-table', null],
+      ['row-border', 'rule-row', null],
+    ];
+    var sonda = document.createElement('div');
+    sonda.style.cssText = 'position:absolute;visibility:hidden;pointer-events:none';
+    document.body.appendChild(sonda);
+    function rgb(token) { sonda.style.backgroundColor = 'var(--' + token + ')'; return getComputedStyle(sonda).backgroundColor; }
+    function toHex(s) {
+      var m = s.match(/[\d.]+/g); if (!m) return s;
+      return '#' + m.slice(0, 3).map(function (v) { return ('0' + Math.round(+v).toString(16)).slice(-2); }).join('');
+    }
+    function lum(s) {
+      var m = s.match(/[\d.]+/g).slice(0, 3).map(function (v) { v = +v / 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); });
+      return 0.2126 * m[0] + 0.7152 * m[1] + 0.0722 * m[2];
+    }
+    function ratio(a, b) { var x = lum(a), y = lum(b); var hi = Math.max(x, y), lo = Math.min(x, y); return (hi + 0.05) / (lo + 0.05); }
+    function atualizarTokens() {
+      var card = rgb('card');
+      var grade = document.getElementById('swatches');
+      grade.innerHTML = '';
+      TOKENS.forEach(function (t) {
+        var cor = rgb(t[0]);
+        var texto = t[2] ? rgb(t[2]) : null;
+        var r = texto ? ratio(texto, cor) : ratio(cor, card);
+        var legenda = texto ? 'texto ' + r.toFixed(1) + ':1' : (t[0] === 'border' || t[0] === 'row-border' ? 'sobre card ' + r.toFixed(2) + ':1' : 'sobre card ' + r.toFixed(1) + ':1');
+        var min = t[0] === 'ink-muted' ? 3 : (t[0] === 'border' || t[0] === 'row-border' || t[0] === 'background' || t[0] === 'muted' || t[0] === 'accent' || t[0] === 'card') ? 0 : 4.5;
+        var ok = min === 0 || r >= min;
+        var el = document.createElement('div');
+        el.className = 'swatch';
+        el.innerHTML = '<div class="cor" style="background:var(--' + t[0] + ')"></div><div class="info"><div class="nome">--' + t[0] + '</div><div class="hex">' + toHex(cor) + ' · ' + t[1] + '</div><div class="ratio"><b>' + legenda + '</b>' + (min ? (ok ? ' · passa' : ' · abaixo de ' + min) : '') + '</div></div>';
+        grade.appendChild(el);
+      });
+      var rampa = document.getElementById('rampa');
+      rampa.innerHTML = '';
+      ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900'].forEach(function (n) {
+        var d = document.createElement('div');
+        d.style.background = n === '700' ? 'var(--primary)' : 'var(--brand-' + n + ')';
+        d.textContent = n;
+        rampa.appendChild(d);
+      });
+    }
+    aplicar(salvo());
+  })();
+</script>
