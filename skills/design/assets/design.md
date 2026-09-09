@@ -17,6 +17,12 @@ painel operacional: densidade alta, ruído baixo, nada decorativo.
 Regra de ouro herdada: **onde este documento e o código divergirem, um dos dois
 está errado — descubra qual antes de mudar qualquer coisa.**
 
+> **Quadro adicionado em 2026-09-09** (§8.5 e §9.6): `Board`, `BoardColumn` e
+> `BoardCard`, com a coluna de altura fixa em que só a pilha de cartões rola.
+> A altura é do quadro, pelo `height` do `Board` (`curto` / `padrao` / `alto`),
+> não da coluna. Nenhum componente existente mudou; a numeração de §8 abriu
+> espaço (o antigo §8.5 Tabela virou §8.6).
+>
 > **Tema escuro adicionado em 2026-09-09** (§2.1): uma camada `.dark` de tokens
 > em `index.css`, `src/lib/theme.ts` e `ThemeToggle`. Nenhum componente mudou.
 > A ausência "sem tema escuro" da §1.4 deixou de valer (constitution 2.1.0).
@@ -86,6 +92,9 @@ Cada ausência abaixo é uma decisão, não um esquecimento:
 - **Sem biblioteca de toast.** Aviso é `Alert` no fluxo da tela, onde a ação
   aconteceu, e não some sozinho.
 - **Sem `<select>` nativo** em painel (ver §9.3).
+- **Sem biblioteca de drag-and-drop.** No quadro, o estado muda por um controle
+  explícito dentro do cartão (§9.6): funciona no teclado e no toque, respeita
+  permissão e não custa uma dependência para uma interação que exclui gente.
 
 ### 1.5 Instalação em um projeto novo
 

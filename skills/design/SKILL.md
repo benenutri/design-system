@@ -69,8 +69,8 @@ o kit.
     `SelectMenu` dentro do cartão.
 
 Ausências deliberadas (§1.4): sem lib de formulário, sem estado global, sem
-date picker, sem CSS-in-JS, sem toast. Reverter é emenda à constitution, não
-`npm i`.
+date picker, sem CSS-in-JS, sem toast, sem drag-and-drop. Reverter é emenda à
+constitution, não `npm i`.
 
 ## Tema escuro
 
