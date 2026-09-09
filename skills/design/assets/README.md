@@ -21,7 +21,7 @@ Leia o §14 dele antes de portar; este README só diz **o que copiar para onde**
 | `lib/theme.ts` | `frontend/src/lib/theme.ts` | tema claro/escuro/sistema: `getTheme`, `setTheme`, `toggleTheme`, `applyTheme`, `watchSystemTheme` (§2.1) |
 | `components/ThemeToggle.tsx` | `frontend/src/components/ThemeToggle.tsx` | botão Sol/Lua sobre `IconButton`, em tom neutro; **já montado** no rodapé do `AdminLayout` de exemplo |
 | `components/ui/*.tsx` | `frontend/src/components/ui/` | primitivos shadcn **já ajustados** (§7). Não rode `npx shadcn add` por cima sem reaplicar o diff |
-| `components/page.tsx` | `frontend/src/components/page.tsx` | vocabulário do produto (§8): `PageHeader`, `Panel`, `Toolbar`, `SelectMenu`, `Status`, `Table`, `Pagination`… (`EtiquetaLista` e `CheckRow` são do CRM: apague se a spec não pedir) |
+| `components/page.tsx` | `frontend/src/components/page.tsx` | vocabulário do produto (§8): `PageHeader`, `Panel`, `Toolbar`, `SelectMenu`, `Status`, `Table`, `Pagination`, `Board`/`BoardColumn`/`BoardCard`… (`EtiquetaLista` e `CheckRow` são do CRM: apague se a spec não pedir) |
 | `components/Logo.tsx` | `frontend/src/components/Logo.tsx` | marca: `BRAND_GREEN`, `Monogram` (SVG inline, `currentColor`), `MonogramTile` (quadrado do login, certo nos dois temas), `Wordmark` (PNG) |
 | `vitrine.html` | — (referência) | página autocontida com tokens, tipografia, componentes, listagem, login e marca nos dois temas; abra no navegador para ver o padrão antes de codar |
 | `components/AdminLayout.tsx` | `frontend/src/components/AdminLayout.tsx` | **exemplo** do layout (§10): janela que não rola, menu lateral com estado em `localStorage`, gaveta no mobile. Acoplado ao CRM (importa `@/lib/sessao`, módulos e rotas dele) — adapte |

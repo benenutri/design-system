@@ -1,6 +1,6 @@
 ---
 name: design
-description: Design system oficial da Benenutri para os projetos Mitra (p-NNNNN): tokens de cor e tipografia (Manrope + Work Sans, verde #156b16), marca (logos, monograma, favicon), primitivos shadcn já ajustados, vocabulário de tela (PageHeader, Panel, Toolbar, SelectMenu, Status, Table, Pagination) e os anti-padrões que reprovam revisão. Use SEMPRE que, num projeto da Benenutri, o pedido envolver tela, página, layout, componente, formulário, tabela, filtro, diálogo, cor, tema, fonte, logo, favicon, "design system", shadcn, Tailwind, "deixar bonito", "padronizar visual", revisar UI, ou instalar/portar o padrão visual num projeto novo — mesmo que o usuário não diga "design".
+description: Design system oficial da Benenutri para os projetos Mitra (p-NNNNN): tokens de cor e tipografia (Manrope + Work Sans, verde #156b16), marca (logos, monograma, favicon), primitivos shadcn já ajustados, vocabulário de tela (PageHeader, Panel, Toolbar, SelectMenu, Status, Table, Pagination, Board) e os anti-padrões que reprovam revisão. Use SEMPRE que, num projeto da Benenutri, o pedido envolver tela, página, layout, componente, formulário, tabela, quadro, kanban, filtro, diálogo, cor, tema, fonte, logo, favicon, "design system", shadcn, Tailwind, "deixar bonito", "padronizar visual", revisar UI, ou instalar/portar o padrão visual num projeto novo — mesmo que o usuário não diga "design".
 ---
 
 # Design system Benenutri
@@ -23,6 +23,7 @@ o kit.
 | projeto novo, ou projeto sem design system | **Instalar** | `assets/README.md`, `design.md` §1.5 e §14 |
 | projeto com tema antigo (classes `.theme-light`, hex inline, tokens `--color-*` do template Mitra) | **Portar** | `design.md` §2, §3, §14 |
 | "cria a tela X", "adiciona um filtro", "faz o diálogo de…" | **Construir** | `design.md` §8, §9, §10 |
+| "quadro", "kanban", "coluna por etapa", "arrastar cartão" | **Construir** | `design.md` §8.5 e §9.6 |
 | "revisa a UI", "está fora do padrão?", PR com telas | **Revisar** | `design.md` §5, §14 (anti-padrões) |
 | logo, favicon, cor da marca, tela de login | **Marca** | `design.md` §10.1, §11 |
 | "modo escuro", "dark mode", "tema", "cor nova", "está estourando no escuro" | **Tema escuro** | `design.md` §2.1, `assets/README.md` |
@@ -60,6 +61,12 @@ o kit.
     de componentes. Cor nova nasce em `:root` **e** em `.dark`; `dark:` solto
     em tela é defeito. A classe é aplicada por `lib/theme.ts` (claro / escuro /
     sistema) e pelo script inline do `index.html`; o botão é `ThemeToggle`.
+
+12. **Coluna de quadro tem altura fixa e rola por dentro** (`BoardColumn`,
+    §9.6): o cabeçalho da fase fica parado, as fases continuam alinhadas e o
+    quadro não empurra o resto da tela. Sem `min-h-0` no miolo, o
+    `overflow-y-auto` não faz nada. Cartão não se arrasta — o estado muda por
+    `SelectMenu` dentro do cartão.
 
 Ausências deliberadas (§1.4): sem lib de formulário, sem estado global, sem
 date picker, sem CSS-in-JS, sem toast. Reverter é emenda à constitution, não
@@ -130,6 +137,10 @@ proponha a trilha e as waves.
   (`Th`/`Td` com `numeric`, `RowTitle`/`RowMeta`, `Status`, `Code`, `Dash`,
   `IconButton`) + `Pagination`. Se a tela precisou de classe crua, pare e
   acrescente o nome que falta ao `page.tsx`.
+- Quadro é a segunda leitura da mesma listagem, não outra tela: mesmo `Panel`,
+  mesma `Toolbar`, um par "Quadro"/"Lista" alterna. `Board` + `BoardColumn`
+  (altura fixa, pilha rolando por dentro) + `BoardCard`. O filtro de estado
+  sai da barra quando a visão é quadro — as colunas **são** esse filtro.
 - Diálogo: `max-h-[90vh]`, só o miolo rola (`DialogBody`), rodapé
   `flex-col-reverse sm:flex-row sm:justify-end`, ação primária à direita.
 - Aba: ação primária mora na faixa da aba, não no cabeçalho; aba sem
@@ -150,8 +161,8 @@ vocabulário substitui. Reprovam sem discussão de mérito: cor crua, `<select>`
 nativo em painel, selo preenchido em célula, zebra, inativo vermelho,
 `ink-muted` em corpo, azul estrutural, botão escondido por permissão, `0`
 onde é `Dash`, `shadcn add` sem reaplicar o diff, `@radix-ui/react-*` avulso,
-cor definida só no `@theme` fora do `:root`. Contraste mínimo de texto e
-ícone: 4,5:1 sobre branco.
+cor definida só no `@theme` fora do `:root`, coluna de quadro que cresce com o
+conteúdo. Contraste mínimo de texto e ícone: 4,5:1 sobre branco.
 
 ## Marca
 
@@ -183,7 +194,7 @@ tocado por este plugin. Fluxo completo de SYNC/SHARE na skill `mitra-escopo`.
 
 | Quando | Abra |
 |---|---|
-| Qualquer decisão visual | `assets/design.md` (índice: §1 stack · §2 tokens · §3 apelidos · §4 tipografia · §5 cores · §6 forma · §7 primitivos · §8 vocabulário · §9 padrões de tela · §10 layout e login · §11 marca · §12 gráficos · §13 movimento/acessibilidade · §14 checklist e anti-padrões) |
+| Qualquer decisão visual | `assets/design.md` (índice: §1 stack · §2 tokens · §3 apelidos · §4 tipografia · §5 cores · §6 forma · §7 primitivos · §8 vocabulário (8.5 quadro · 8.6 tabela) · §9 padrões de tela (9.1 tabela · 9.5 diálogo · 9.6 quadro) · §10 layout e login · §11 marca · §12 gráficos · §13 movimento/acessibilidade · §14 checklist e anti-padrões) |
 | Copiar arquivos, dependências | `assets/README.md` |
 | Processo (spec antes de código, migrations, tokens) | `assets/constitution.md` |
 | Implementação de referência viva | `mitra-projects/p-57803/frontend/src` |

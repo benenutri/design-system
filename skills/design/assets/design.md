@@ -779,7 +779,26 @@ Stat({ children })                        // número em destaque dentro de uma f
 MetaDot()                                 // separador · entre contagens
 ```
 
-### 8.5 Tabela
+### 8.5 Quadro
+
+```tsx
+Board({ height?: 'curto' | 'padrao' | 'alto', children })  // grade: 1 / 2 (sm) / 4 (xl)
+BoardColumn({ title, count, children })                    // altura fixa; só a pilha rola
+BoardCard({ children })                                    // cartão sobre a coluna rebaixada
+```
+
+A coluna tem **altura fixa** e rolagem interna; o porquê e os limites estão no
+§9.6.
+
+A altura é do **quadro**, não da coluna: `height` mora no `Board`, que publica
+`--board-column-h`, e toda `BoardColumn` dentro dele lê a mesma variável. Se
+cada coluna escolhesse a sua, as fases desalinhariam — que é o que a altura
+fixa existe para evitar. `curto` (22rem) cabe num cartão de dashboard, `padrao`
+(30rem) é a tela de trabalho, `alto` (40rem) é para monitor grande em que o
+quadro é o assunto principal. Outro valor pede **um nome novo em
+`BOARD_HEIGHT`**, não uma classe na tela.
+
+### 8.6 Tabela
 
 ```tsx
 Table({ children, className? })   // remove o filete da última linha
@@ -879,6 +898,51 @@ a aba inteira, não deixa ela clicável para dar erro depois.
 parados. O cabeçalho tem `pr-10` para não passar por baixo do botão de fechar.
 O rodapé é `flex-col-reverse` no mobile e `sm:flex-row sm:justify-end` no
 desktop: a ação primária fica por cima no celular e à direita no desktop.
+
+### 9.6 Quadro — altura fixa, rolagem por coluna
+
+O quadro (kanban) é a segunda leitura de uma listagem, não uma tela à parte:
+mora no mesmo `Panel`, sob a mesma `Toolbar`, e um par de botões alterna
+"Quadro" / "Lista". O filtro de estado sai da barra quando a visão é quadro —
+as colunas **são** o filtro de estado.
+
+**A coluna tem altura fixa e só a pilha de cartões rola.** É o mesmo princípio
+do diálogo (§9.5) e do `<main>` (§10): o quadro inteiro nunca é a coisa que
+rola. A altura vem do `Board` (`height`, padrão 30rem — §8.5); o que não se
+negocia é ela ser **fixa e igual em todas as fases**.
+
+Três coisas quebram quando a coluna cresce com o conteúdo:
+
+- **as colunas desalinham.** Uma fase com trinta itens fica com milhares de
+  pixels; as outras três viram faixas curtas no topo. Comparar fases é a razão
+  de existir do quadro, e a comparação some.
+- **o cabeçalho da fase sai da tela.** Quem rolou até o vigésimo cartão não vê
+  mais em que coluna está — o rótulo ficou lá em cima. Com a coluna fixa, o
+  cabeçalho é `shrink-0` e fica parado.
+- **o resto da tela é empurrado.** Rodapé, paginação e qualquer aviso vão para
+  onde ninguém rola.
+
+Mecânica, na ordem em que morde:
+
+- O miolo que rola precisa de **`min-h-0`**. Sem ele o filho de um flex
+  container se recusa a encolher abaixo do próprio conteúdo, o `overflow-y-auto`
+  não tem o que cortar, e a coluna estica de novo — com a altura fixa escrita
+  no arquivo e nenhum efeito na tela.
+- O cabeçalho é **`shrink-0`**, senão o flex o comprime quando a pilha enche.
+- Altura em `rem`, não em `vh`: a coluna acompanha a tipografia, e no mobile,
+  onde as colunas empilham, `vh` daria quatro telas cheias de uma fase só.
+- Altura por **nome** (`height="alto"`), nunca um valor solto na tela. Um
+  `h-[34rem]` escrito numa tela é a mesma dívida de um hex cru: da próxima vez
+  alguém escreve 35 e o quadro da tela ao lado deixa de ser o mesmo objeto.
+- Cada coluna guarda o **próprio** scroll. Rolar "Em andamento" não move
+  "A fazer" — são pilhas independentes, e é isso que se espera de um quadro.
+
+**Não se arrasta cartão.** O estado muda por um controle explícito dentro do
+cartão (um `SelectMenu`), que funciona no teclado e no toque, respeita
+permissão e não custa uma biblioteca de drag-and-drop. Uma tela que só oferece
+o arrastar exclui quem navega por teclado.
+
+O contador no cabeçalho é o total **da fase**, não o que está visível.
 
 ---
 
@@ -1004,3 +1068,8 @@ pizza em painel operacional.
 - Token definido em `:root` sem o par em `.dark` (ou o contrário).
 - `dark:` em tela ou em `page.tsx` para consertar uma cor — o lugar é o token.
 - Imagem ou logo "versão escura" quando `currentColor` ou o contraste resolvem.
+- Coluna de quadro que cresce com o conteúdo, em vez de altura fixa com a pilha
+  rolando por dentro (§9.6) — desalinha as fases e leva o cabeçalho embora.
+- `overflow-y-auto` numa coluna de quadro **sem** `min-h-0` no miolo: a altura
+  fica escrita no arquivo e não acontece nada na tela.
+- Arrastar cartão como único jeito de mudar o estado — exclui teclado e toque.

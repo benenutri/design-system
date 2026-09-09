@@ -298,6 +298,22 @@
   .pagination { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 16px; border-top: 1px solid var(--row-border); color: var(--muted-foreground); font-size: 12px; }
   .pagination .btns { display: inline-flex; gap: 6px; }
 
+  /* ═══ Quadro (design.md §9.6) ═══ */
+  /* A altura é do QUADRO, não da coluna: quem define é o .quadro, e toda .fase
+     dentro dele lê a mesma variável — no React é o `height` do <Board>. */
+  .quadro { display: grid; gap: 12px; padding: 16px; grid-template-columns: 1fr; --board-column-h: 30rem; }
+  .quadro.curto { --board-column-h: 22rem; }
+  .quadro.alto { --board-column-h: 40rem; }
+  @media (min-width: 640px) { .quadro { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1100px) { .quadro { grid-template-columns: repeat(4, 1fr); } }
+  /* Altura FIXA: a fase cheia não estica o quadro nem desalinha as vizinhas. */
+  .fase { display: flex; flex-direction: column; gap: 8px; height: var(--board-column-h, 30rem); padding: 8px; border-radius: 1rem; background: var(--muted); }
+  .fase > header { display: flex; flex-shrink: 0; align-items: center; justify-content: space-between; padding: 4px 6px; font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--muted-foreground); }
+  /* min-height:0 é o que deixa o overflow cortar; sem ele a coluna estica. */
+  .fase .pilha { display: flex; flex: 1; min-height: 0; flex-direction: column; gap: 8px; overflow-y: auto; padding-right: 4px; }
+  .cartao { display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: .75rem; border: 1px solid var(--border); background: var(--card); font-size: 13px; }
+  .cartao .linha { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; font-size: 12px; color: var(--muted-foreground); }
+
   /* ═══ Login (design.md §10.1) ═══ */
   .login { display: grid; grid-template-columns: 1fr; gap: 24px; padding: 32px; border-radius: 1.5rem; background: var(--background); border: 1px solid var(--border-soft); }
   @media (min-width: 880px) { .login { grid-template-columns: 1.1fr 1fr; align-items: center; padding: 48px; } }
@@ -373,7 +389,7 @@
     <div class="titulo">Design System Benenutri</div>
     <div class="sub">Tokens, componentes e telas do kit, nos dois temas. Alterne aqui e tudo abaixo muda sem trocar um componente.</div>
   </div>
-  <div class="segment" role="group" aria-label="Tema">
+  <div class="segment" role="group" aria-label="Tema" id="temas">
     <button type="button" data-tema="light" aria-pressed="false"><svg><use href="#i-sun"/></svg>Claro</button>
     <button type="button" data-tema="dark" aria-pressed="false"><svg><use href="#i-moon"/></svg>Escuro</button>
     <button type="button" data-tema="system" aria-pressed="false"><svg><use href="#i-monitor"/></svg>Sistema</button>
@@ -532,6 +548,123 @@
     </div>
   </section>
 
+  <section id="quadro">
+    <header>
+      <div class="eyebrow">design.md §8.5 · §9.6</div>
+      <h2>Quadro</h2>
+      <p>A mesma listagem, lida por etapa. Cada fase tem <b>altura fixa</b> e só a pilha de cartões rola por dentro — role a primeira coluna e repare que o rótulo da fase fica parado, as vizinhas não se mexem e o rodapé da página não é empurrado. O estado muda pelo seletor dentro do cartão: não se arrasta cartão.</p>
+      <p>A altura é do quadro, não da coluna: no React é o <code>height</code> do <code>&lt;Board&gt;</code>, que publica <code>--board-column-h</code> para todas as fases. Troque aqui e repare que as quatro mudam juntas — é isso que mantém as fases comparáveis.</p>
+      <div class="segment" role="group" aria-label="Altura da coluna" id="alturas">
+        <button type="button" data-altura="curto" aria-pressed="false">curto · 22rem</button>
+        <button type="button" data-altura="padrao" aria-pressed="true">padrão · 30rem</button>
+        <button type="button" data-altura="alto" aria-pressed="false">alto · 40rem</button>
+      </div>
+    </header>
+
+    <div class="panel">
+      <div class="toolbar">
+        <div class="search"><svg><use href="#i-search"/></svg><input class="input" placeholder="Buscar paciente"></div>
+        <span class="select"><span>Todas as enfermeiras</span><svg><use href="#i-chevron"/></svg></span>
+        <span class="btns-visao" style="margin-left:auto; display:inline-flex; gap:6px">
+          <button class="btn btn-primary btn-sm">Quadro</button>
+          <button class="btn btn-secondary btn-sm"><svg><use href="#i-list"/></svg>Lista</button>
+        </span>
+      </div>
+
+      <div class="quadro">
+        <section class="fase">
+          <header><span>Primeiro contato</span><span>12</span></header>
+          <div class="pilha">
+            <article class="cartao">
+              <div class="row-title">Maria Aparecida dos Santos</div>
+              <div class="row-meta">Ana Beatriz</div>
+              <div class="linha"><span class="status status-alert"><i></i>Alta</span><span>27/08/2026</span></div>
+              <span class="select"><span>Primeiro contato</span><svg><use href="#i-chevron"/></svg></span>
+            </article>
+            <article class="cartao">
+              <div class="row-title">José Carlos Ferreira</div>
+              <div class="row-meta">Beatriz Lima</div>
+              <div class="linha"><span class="status status-attention"><i></i>Média</span><span>29/08/2026</span></div>
+              <span class="select"><span>Primeiro contato</span><svg><use href="#i-chevron"/></svg></span>
+            </article>
+            <article class="cartao">
+              <div class="row-title">Teresa Cristina Almeida</div>
+              <div class="row-meta">Ana Beatriz</div>
+              <div class="linha"><span class="status status-live"><i></i>Baixa</span><span class="dash">—</span></div>
+              <span class="select"><span>Primeiro contato</span><svg><use href="#i-chevron"/></svg></span>
+            </article>
+            <article class="cartao">
+              <div class="row-title">Antônio Marques Vieira</div>
+              <div class="row-meta">Beatriz Lima</div>
+              <div class="linha"><span class="status status-live"><i></i>Baixa</span><span>02/09/2026</span></div>
+              <span class="select"><span>Primeiro contato</span><svg><use href="#i-chevron"/></svg></span>
+            </article>
+            <article class="cartao">
+              <div class="row-title">Rosa Helena Nogueira</div>
+              <div class="row-meta">Ana Beatriz</div>
+              <div class="linha"><span class="status status-attention"><i></i>Média</span><span>03/09/2026</span></div>
+              <span class="select"><span>Primeiro contato</span><svg><use href="#i-chevron"/></svg></span>
+            </article>
+            <article class="cartao">
+              <div class="row-title">Sebastião Alves Pinto</div>
+              <div class="row-meta">Beatriz Lima</div>
+              <div class="linha"><span class="status status-live"><i></i>Baixa</span><span>05/09/2026</span></div>
+              <span class="select"><span>Primeiro contato</span><svg><use href="#i-chevron"/></svg></span>
+            </article>
+          </div>
+        </section>
+
+        <section class="fase">
+          <header><span>Ligação 7 dias</span><span>8</span></header>
+          <div class="pilha">
+            <article class="cartao">
+              <div class="row-title">Célia Regina Barbosa</div>
+              <div class="row-meta">Ana Beatriz</div>
+              <div class="linha"><span class="status status-alert"><i></i>Alta</span><span>26/08/2026</span></div>
+              <span class="select"><span>Ligação 7 dias</span><svg><use href="#i-chevron"/></svg></span>
+            </article>
+            <article class="cartao">
+              <div class="row-title">Paulo Roberto Camargo</div>
+              <div class="row-meta">Beatriz Lima</div>
+              <div class="linha"><span class="status status-live"><i></i>Baixa</span><span>04/09/2026</span></div>
+              <span class="select"><span>Ligação 7 dias</span><svg><use href="#i-chevron"/></svg></span>
+            </article>
+            <article class="cartao">
+              <div class="row-title">Ivone da Silva Prado</div>
+              <div class="row-meta">Ana Beatriz</div>
+              <div class="linha"><span class="status status-attention"><i></i>Média</span><span class="dash">—</span></div>
+              <span class="select"><span>Ligação 7 dias</span><svg><use href="#i-chevron"/></svg></span>
+            </article>
+          </div>
+        </section>
+
+        <section class="fase">
+          <header><span>Retorno agendado</span><span>3</span></header>
+          <div class="pilha">
+            <article class="cartao">
+              <div class="row-title">Nelson Batista Corrêa</div>
+              <div class="row-meta">Beatriz Lima</div>
+              <div class="linha"><span class="status status-live"><i></i>Baixa</span><span>10/09/2026</span></div>
+              <span class="select"><span>Retorno agendado</span><svg><use href="#i-chevron"/></svg></span>
+            </article>
+            <article class="cartao">
+              <div class="row-title">Lúcia Helena Moraes</div>
+              <div class="row-meta">Ana Beatriz</div>
+              <div class="linha"><span class="status status-attention"><i></i>Média</span><span>12/09/2026</span></div>
+              <span class="select"><span>Retorno agendado</span><svg><use href="#i-chevron"/></svg></span>
+            </article>
+          </div>
+        </section>
+
+        <section class="fase">
+          <header><span>Encerrado</span><span>0</span></header>
+          <div class="pilha"></div>
+        </section>
+      </div>
+    </div>
+    <p class="nota">A quarta fase está vazia de propósito: a coluna guarda a altura, e o quadro continua legível como uma grade de quatro. Numa tela real ela levaria um <code>EmptyState</code> curto.</p>
+  </section>
+
   <section id="login">
     <header>
       <div class="eyebrow">design.md §10.1 · §11</div>
@@ -580,7 +713,7 @@
     function salvo() { try { return localStorage.getItem(KEY) || 'system'; } catch (e) { return 'system'; } }
     function aplicar(t) {
       if (t === 'light' || t === 'dark') root.setAttribute('data-theme', t); else root.removeAttribute('data-theme');
-      document.querySelectorAll('.segment button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.tema === t)); });
+      document.querySelectorAll('#temas button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.tema === t)); });
       var escuro = t === 'dark' || (t === 'system' && media.matches);
       var tm = document.getElementById('toggle-menu');
       tm.querySelector('use').setAttribute('href', escuro ? '#i-sun' : '#i-moon');
@@ -590,7 +723,7 @@
       atualizarTokens();
     }
     function definir(t) { try { localStorage.setItem(KEY, t); } catch (e) {} aplicar(t); }
-    document.querySelectorAll('.segment button').forEach(function (b) { b.addEventListener('click', function () { definir(b.dataset.tema); }); });
+    document.querySelectorAll('#temas button').forEach(function (b) { b.addEventListener('click', function () { definir(b.dataset.tema); }); });
     document.getElementById('toggle-menu').addEventListener('click', function () {
       var escuro = root.getAttribute('data-theme') === 'dark' || (!root.getAttribute('data-theme') && media.matches);
       definir(escuro ? 'light' : 'dark');
@@ -651,5 +784,19 @@
       });
     }
     aplicar(salvo());
+  })();
+
+  /* Altura do quadro (design.md §8.5): troca a classe do .quadro, como o
+     `height` do <Board> troca a variável no React. Uma variável, quatro fases. */
+  (function () {
+    var quadro = document.querySelector('#quadro .quadro');
+    var botoes = document.querySelectorAll('#alturas button');
+    botoes.forEach(function (b) {
+      b.addEventListener('click', function () {
+        quadro.classList.remove('curto', 'alto');
+        if (b.dataset.altura !== 'padrao') quadro.classList.add(b.dataset.altura);
+        botoes.forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); });
+      });
+    });
   })();
 </script>

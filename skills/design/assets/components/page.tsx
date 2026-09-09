@@ -713,7 +713,87 @@ export function MetaDot() {
   );
 }
 
-// ── 8.5 Tabela ────────────────────────────────────────────────────────────
+// ── 8.5 Quadro ────────────────────────────────────────────────────────────
+//
+// Colunas por estado, dentro do Panel. Sem arrastar cartão: o estado muda por
+// controle explícito dentro do cartão (um SelectMenu), que funciona no teclado
+// e no toque sem biblioteca de drag. Área rebaixada usa paper-sunken — nunca
+// um terceiro cinza (§5).
+
+/**
+ * Altura da coluna, por nome. Mora no `Board` e não na `BoardColumn` porque a
+ * altura é do quadro inteiro: se cada coluna escolhesse a sua, as fases
+ * desalinhariam — que é justamente o que a altura fixa existe para evitar.
+ *
+ * `curto` cabe num cartão de dashboard; `padrao` é a tela de trabalho;
+ * `alto` é para monitor grande, quando sobra altura e o quadro é o assunto
+ * principal da tela. Precisou de outro valor? Acrescente um nome aqui, não uma
+ * classe na tela.
+ */
+const BOARD_HEIGHT = {
+  curto: '[--board-column-h:22rem]',
+  padrao: '[--board-column-h:30rem]',
+  alto: '[--board-column-h:40rem]',
+} as const;
+
+export function Board({
+  height = 'padrao',
+  children,
+}: {
+  height?: keyof typeof BOARD_HEIGHT;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className={cn('grid gap-3 p-4 sm:grid-cols-2 xl:grid-cols-4', BOARD_HEIGHT[height])}>
+      {children}
+    </div>
+  );
+}
+
+/**
+ * Coluna de altura FIXA em que só a pilha de cartões rola (§9.6).
+ *
+ * O cabeçalho da fase fica parado e visível — quem rolou trinta cartões ainda
+ * sabe em que coluna está. E a coluna cheia não estica o quadro nem desalinha
+ * as vizinhas: sem isto, uma fase com trinta itens empurra o rodapé para
+ * milhares de pixels abaixo e as outras três viram faixas curtas no topo.
+ *
+ * A altura vem do `Board` pela variável `--board-column-h`; o valor no
+ * fallback é o mesmo do `padrao`, para a coluna usada fora de um `Board`
+ * continuar de pé em vez de colapsar.
+ *
+ * `min-h-0` no miolo não é enfeite: sem ele o filho de um flex container se
+ * recusa a encolher abaixo do conteúdo, e o overflow nunca chega a rolar.
+ */
+export function BoardColumn({
+  title,
+  count,
+  children,
+}: {
+  title: string;
+  count: number;
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="flex h-[var(--board-column-h,30rem)] flex-col gap-2 rounded-2xl bg-paper-sunken p-2">
+      <header className="flex shrink-0 items-center justify-between px-1.5 py-1 text-[11px] font-semibold tracking-[0.14em] text-ink-muted uppercase">
+        <span>{title}</span>
+        <span>{count}</span>
+      </header>
+      <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto pr-1">{children}</div>
+    </section>
+  );
+}
+
+export function BoardCard({ children }: { children: React.ReactNode }) {
+  return (
+    <article className="flex flex-col gap-2 rounded-xl border border-rule-table bg-card p-3 text-[13px]">
+      {children}
+    </article>
+  );
+}
+
+// ── 8.6 Tabela ────────────────────────────────────────────────────────────
 
 /** Remove o filete da última linha — é o que fecha o canto do Panel. */
 export function Table({
