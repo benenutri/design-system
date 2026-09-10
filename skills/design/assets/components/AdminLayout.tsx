@@ -123,7 +123,7 @@ export default function AdminLayout({
         ) : (
           <>
             <Wordmark className="h-6" />
-            <p className="text-[11px] font-semibold tracking-[0.08em] text-ink-muted">CRM Ativa</p>
+            <p className="text-[11px] font-semibold tracking-[0.08em] text-ink-secondary">CRM Ativa</p>
           </>
         )}
       </div>
