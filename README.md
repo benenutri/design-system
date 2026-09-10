@@ -47,7 +47,7 @@ num projeto novo) que a skill entra sozinha.
 
 O `design.md` é normativo. Mudou componente? Atualize a seção correspondente no
 **mesmo commit**, e confira se a `vitrine.html` continua batendo — ela já
-pegou duas divergências entre o que a doc prometia e o que o código fazia.
+pegou três divergências entre o que a doc prometia e o que o código fazia.
 
 Contraste é **medido**, não estimado: 4,5:1 para texto e 3:1 para elemento
 gráfico, nos dois temas.
