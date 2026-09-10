@@ -4,7 +4,7 @@ Princípios inegociáveis deste projeto. Toda `spec`, `plan` e `tasks` é checad
 contra este documento. Violação exige justificativa explícita registrada no
 `plan.md` da feature (seção *Complexity Tracking*) — ou não passa.
 
-**Versão:** 2.1.0 · **Ratificada:** 2026-08-27 · **Última alteração:** 2026-09-09
+**Versão:** 2.2.0 · **Ratificada:** 2026-08-27 · **Última alteração:** 2026-09-10
 
 O sistema visual é normativo e mora em [`design.md`](design.md). Onde este
 documento e o `design.md` se sobrepuserem, o `design.md` decide a aparência e
@@ -79,14 +79,23 @@ toda cor nova nasce em `:root` **e** em `.dark`, nunca só num deles.
 ## VI. Design tokens, nunca cor literal
 
 Cor vem dos tokens de `frontend/src/index.css`, consumidos pelos apelidos do
-`tailwind.config.js` (`bg-card`, `text-ink-secondary`, `border-rule-row`,
-`bg-brand-50`…). Os valores são **triplas HSL sem `hsl()`** — é o que permite
-`bg-primary/90` funcionar.
+bloco `@theme inline` do próprio arquivo (`bg-card`, `text-ink-secondary`,
+`border-rule-row`, `bg-brand-50`…). No Tailwind 4 não existe
+`tailwind.config.js`, e os valores são `hsl(...)` completo — o modificador de
+opacidade (`bg-primary/90`) opera sobre a cor pronta.
+
+**Cor de série de gráfico vem da rampa de dados** (`--data-1…8`), nunca da
+rampa da marca e nunca da paleta de estado: são três famílias com três
+trabalhos — marca é superfície, estado é julgamento, dado é identidade.
 
 São defeito, não questão de gosto:
 
 - hex cru (`bg-[#156b16]`) ou cor do Tailwind (`text-green-700`) em componente;
-- azul como acento estrutural em tela operacional;
+- azul como **acento estrutural** em tela operacional — botão, link, foco,
+  seleção. Dentro de um gráfico a regra não vale: ali o matiz identifica uma
+  série e não sinaliza nada;
+- série de gráfico pintada com cor de estado, ou estado sinalizado só por cor,
+  sem rótulo ao lado;
 - `ink-muted` (3,8:1) em corpo de texto — ele é só rótulo em caixa alta;
 - inativo pintado de vermelho.
 
@@ -144,6 +153,18 @@ princípios que a feature toca e como os atende. Falha na checagem é
 replanejamento, não exceção informal.
 
 ### Histórico de emendas
+
+**2.2.0 — 2026-09-10.** Gráficos e BI. O princípio VI ganha a **rampa de
+dados** (`--data-1…8`) como origem única da cor de série, separada da rampa da
+marca e da paleta de estado, e a proibição de azul passa a valer só para
+*acento estrutural* — dentro de um gráfico, matiz identifica série e não
+sinaliza nada. Justificativa: a regra anterior mandava usar a rampa `brand-*`
+como cor de série, e ela reprova quando medida — ΔE 12,7 entre dois verdes
+vizinhos na visão normal, abaixo do piso de 15, ou seja, indistinguíveis mesmo
+para quem enxerga cor por completo. Nesta emenda também caem duas heranças do
+Tailwind 3 que o texto ainda repetia e que o `design.md` §2 e §3 já
+contradiziam: os apelidos não vêm de `tailwind.config.js`, que não existe na
+v4, e os valores não são triplas HSL sem `hsl()`.
 
 **2.1.0 — 2026-09-09.** Tema escuro. A ausência "sem tema escuro" da §1.4 do
 `design.md` deixa de valer: entra a camada `.dark` de tokens em `index.css`
