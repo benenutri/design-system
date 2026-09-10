@@ -1,6 +1,6 @@
 ---
 name: design
-description: Design system oficial da Benenutri para os projetos Mitra (p-NNNNN): tokens de cor e tipografia (Manrope + Work Sans, verde #156b16), marca (logos, monograma, favicon), primitivos shadcn já ajustados, vocabulário de tela (PageHeader, Panel, Toolbar, SelectMenu, Status, Table, Pagination, Board) e os anti-padrões que reprovam revisão. Use SEMPRE que, num projeto da Benenutri, o pedido envolver tela, página, layout, componente, formulário, tabela, quadro, kanban, filtro, diálogo, cor, tema, fonte, logo, favicon, "design system", shadcn, Tailwind, "deixar bonito", "padronizar visual", revisar UI, ou instalar/portar o padrão visual num projeto novo — mesmo que o usuário não diga "design".
+description: Design system oficial da Benenutri para os projetos Mitra (p-NNNNN): tokens de cor e tipografia (Manrope + Work Sans, verde #156b16), marca (logos, monograma, favicon), primitivos shadcn já ajustados, vocabulário de tela (PageHeader, Panel, Toolbar, SelectMenu, Status, Table, Pagination, Board, PainelGrafico, Kpi), a rampa de dados para gráfico e os anti-padrões que reprovam revisão. Use SEMPRE que, num projeto da Benenutri, o pedido envolver tela, página, layout, componente, formulário, tabela, quadro, kanban, filtro, diálogo, gráfico, painel, dashboard, KPI, indicador visual, BI, cor de série, cor, tema, fonte, logo, favicon, "design system", shadcn, recharts, Tailwind, "deixar bonito", "padronizar visual", revisar UI, ou instalar/portar o padrão visual num projeto novo — mesmo que o usuário não diga "design".
 ---
 
 # Design system Benenutri
@@ -24,6 +24,7 @@ o kit.
 | projeto com tema antigo (classes `.theme-light`, hex inline, tokens `--color-*` do template Mitra) | **Portar** | `design.md` §2, §3, §14 |
 | "cria a tela X", "adiciona um filtro", "faz o diálogo de…" | **Construir** | `design.md` §8, §9, §10 |
 | "quadro", "kanban", "coluna por etapa", "arrastar cartão" | **Construir** | `design.md` §8.5 e §9.6 |
+| "gráfico", "painel", "dashboard", "KPI", "indicador", "BI", "cor de série" | **Construir** | `design.md` §12, §8.7 e §9.7 — e o skill `dataviz` para a forma |
 | "revisa a UI", "está fora do padrão?", PR com telas | **Revisar** | `design.md` §5, §14 (anti-padrões) |
 | logo, favicon, cor da marca, tela de login | **Marca** | `design.md` §10.1, §11 |
 | "modo escuro", "dark mode", "tema", "cor nova", "está estourando no escuro" | **Tema escuro** | `design.md` §2.1, `assets/README.md` |
@@ -62,7 +63,14 @@ o kit.
     em tela é defeito. A classe é aplicada por `lib/theme.ts` (claro / escuro /
     sistema) e pelo script inline do `index.html`; o botão é `ThemeToggle`.
 
-12. **Coluna de quadro tem altura fixa e rola por dentro** (`BoardColumn`,
+12. **Cor de série vem da rampa de dados (`--data-1…8`), não da rampa da
+    marca** — a da marca reprovou medida (§12): ΔE 12,7 entre dois verdes
+    vizinhos, abaixo do piso de 15 na visão normal. Série **não** é estado:
+    verde e vermelho na rampa de dados são matiz, não julgamento. Gráfico mora
+    num `PainelGrafico`, que é quem carrega a altura, e sempre oferece a
+    visão de tabela.
+
+13. **Coluna de quadro tem altura fixa e rola por dentro** (`BoardColumn`,
     §9.6): o cabeçalho da fase fica parado, as fases continuam alinhadas e o
     quadro não empurra o resto da tela. Sem `min-h-0` no miolo, o
     `overflow-y-auto` não faz nada. Cartão não se arrasta — o estado muda por
@@ -93,6 +101,37 @@ constitution, não `npm i`.
 - Quer ver antes de codar: abra `assets/vitrine.html` no navegador — tokens
   com contraste medido ao vivo, componentes, listagem, login e marca, com o
   seletor claro / escuro / sistema.
+
+## Gráficos e BI
+
+- **Divisão de trabalho:** *que forma usar* (é gráfico mesmo? magnitude ou
+  identidade? formato de eixo, camada de hover, anti-padrões) é do skill
+  `dataviz`. *Qual cor, qual lib, dentro de qual moldura* é do `design.md §12`.
+- Lib é **recharts** + o `chart.tsx` do shadcn, e a tela importa
+  `ChartContainer`, `ChartTooltip`, `ChartLegend` do `page.tsx` — nunca do
+  `recharts` direto. ECharts só como escape hatch (sankey, treemap, mapa, zoom
+  em série longa), **naquela** tela, com um `tema.ts` lendo os tokens.
+- Vocabulário do §8.7: `PainelGrafico`, `GradeGraficos`, `GradeKpi`, `Kpi`,
+  `Delta`, `Sparkline`, `corDeSerie`, `tomDeIntensidade`.
+- Painel (§9.7): até 4 KPIs, 2 a 4 gráficos, uma tabela; **um** filtro de
+  período no topo valendo para a tela toda; clicar numa barra filtra a tabela.
+- **O desenho segue a proporção do componente.** Quem manda no tamanho é o
+  `PainelGrafico`; o gráfico preenche o que recebeu. No recharts é o
+  `ResponsiveContainer` (por isso o pai precisa de altura); em SVG à mão, o
+  `viewBox` é o tamanho **medido** do container, nunca uma constante.
+- **Nada fica sozinho numa faixa.** A grade é de duas colunas: o gráfico ímpar
+  ou ocupa a faixa inteira (`largura="total"`) — e só se o dado justificar a
+  largura: série temporal longa, mapa de calor, matriz — ou deixa de ser
+  gráfico e vira `Kpi` ou coluna da tabela. Quatro barras esticadas por 1200px
+  são o mesmo defeito com outra cara.
+- Reprovam na revisão: dois eixos Y, pizza em tela operacional, série pintada
+  com cor de estado, cor de série tirada do índice do array **já filtrado**,
+  `ChartContainer` dentro de pai sem altura (o gráfico some sem erro no
+  console), gráfico com 2+ séries sem legenda, gráfico órfão numa metade da
+  grade com meia faixa vazia ao lado.
+- Quer ver antes de codar: a seção **Gráficos** de `assets/vitrine.html` —
+  rampa com hex e contraste lidos ao vivo, KPIs, três gráficos e mapa de calor
+  nos dois temas.
 
 ## Instalar (projeto novo ou sem design system)
 
@@ -162,7 +201,9 @@ nativo em painel, selo preenchido em célula, zebra, inativo vermelho,
 `ink-muted` em corpo, azul estrutural, botão escondido por permissão, `0`
 onde é `Dash`, `shadcn add` sem reaplicar o diff, `@radix-ui/react-*` avulso,
 cor definida só no `@theme` fora do `:root`, coluna de quadro que cresce com o
-conteúdo, `<img>` com `w-auto` dentro de `flex-col` (estica e deforma a marca).
+conteúdo, `<img>` com `w-auto` dentro de `flex-col` (estica e deforma a marca),
+dois eixos Y, série de gráfico com cor de estado, `var(--chart-1)` no lugar de
+`var(--data-1)`.
 Contraste mínimo de texto e ícone: 4,5:1 sobre branco.
 
 ## Marca
@@ -193,7 +234,9 @@ a deforma para a largura da coluna, e isso chega como "o logo está errado".
 ## Outra marca (projeto fora da Benenutri)
 
 Siga o §14: troque só `--primary`, `--accent`, `--ring` e a rampa `--brand-*`
-no `:root` (formato `hsl()`, hex no comentário), confira contraste ≥ 4,5:1,
+no `:root` (formato `hsl()`, hex no comentário) — a rampa de dados `--data-*`
+**não** acompanha a marca, é neutra de propósito e validada como conjunto —,
+confira contraste ≥ 4,5:1,
 troque fontes e `<link>` juntos, substitua os arquivos de marca e o
 `BRAND_GREEN`. Nenhum `@theme` precisa mudar.
 
@@ -207,7 +250,7 @@ tocado por este plugin. Fluxo completo de SYNC/SHARE na skill `mitra-escopo`.
 
 | Quando | Abra |
 |---|---|
-| Qualquer decisão visual | `assets/design.md` (índice: §1 stack · §2 tokens · §3 apelidos · §4 tipografia · §5 cores · §6 forma · §7 primitivos · §8 vocabulário (8.5 quadro · 8.6 tabela) · §9 padrões de tela (9.1 tabela · 9.5 diálogo · 9.6 quadro) · §10 layout e login · §11 marca · §12 gráficos · §13 movimento/acessibilidade · §14 checklist e anti-padrões) |
+| Qualquer decisão visual | `assets/design.md` (índice: §1 stack · §2 tokens · §3 apelidos · §4 tipografia · §5 cores · §6 forma · §7 primitivos · §8 vocabulário (8.5 quadro · 8.6 tabela · 8.7 gráficos) · §9 padrões de tela (9.1 tabela · 9.5 diálogo · 9.6 quadro · 9.7 painel) · §10 layout e login · §11 marca · §12 gráficos e BI (12.1 lib · 12.2 cor · 12.3 o que não se faz) · §13 movimento/acessibilidade · §14 checklist e anti-padrões) |
 | Copiar arquivos, dependências | `assets/README.md` |
 | Processo (spec antes de código, migrations, tokens) | `assets/constitution.md` |
 | Implementação de referência viva | `mitra-projects/p-57803/frontend/src` |

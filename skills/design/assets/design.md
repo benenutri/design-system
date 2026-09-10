@@ -295,6 +295,12 @@ Duas armadilhas específicas da v4, ambas resolvidas no arquivo abaixo:
      solto em componente. */
   --brand-mark: #45963d;
 
+  /* Rampa de DADOS — cor de série (§12). Oito matizes em ordem fixa, mais
+     quatro passos sequenciais. Não é a rampa da marca e não é paleta de
+     estado. */
+  --data-1: hsl(212.8 67.7% 50.2%);            /* #2a78d6 — azul */
+  /* … --data-2 a --data-8, --data-seq-1 a --data-seq-4 */
+
   --radius: 0.75rem;
 
   color-scheme: light;
@@ -361,6 +367,11 @@ Duas armadilhas específicas da v4, ambas resolvidas no arquivo abaixo:
   /* A marca não muda com o tema. Onde o verde dela não lê (monograma sobre
      accent), o componente troca para accent-foreground — ver Logo.tsx. */
   --brand-mark: #45963d;
+
+  /* Rampa de dados repassada para a superfície escura — mesma ordem, passos
+     próprios: os oito passam de 3:1 contra o --card (§12). */
+  --data-1: hsl(212.8 76.8% 56.1%);            /* #3987e5 — azul */
+  /* … idem */
 
   /* Controles nativos (date, scrollbar, seleção) escurecem junto. */
   color-scheme: dark;
@@ -436,12 +447,11 @@ Duas armadilhas específicas da v4, ambas resolvidas no arquivo abaixo:
   --color-alert: var(--destructive);
   --color-alert-bg: var(--destructive-bg);
 
-  /* Séries de gráfico — a rampa da marca (design.md §12). */
-  --color-chart-1: var(--brand-600);
-  --color-chart-2: var(--brand-400);
-  --color-chart-3: var(--brand-800);
-  --color-chart-4: var(--brand-300);
-  --color-chart-5: var(--brand-900);
+  /* Séries de gráfico — a rampa de dados, oito slots (§12). O nome é
+     `data-N`, não `chart-N`. Mais `--color-data-seq-1…4`, a sequencial. */
+  --color-data-1: var(--data-1);
+  --color-data-2: var(--data-2);
+  /* … até --color-data-8 e a rampa sequencial */
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -558,7 +568,7 @@ verde ao lado deles lê como ação primária.
 | `--destructive` | #b42318 | #f27a70 | 6,2:1 como texto; o botão destrutivo usa `text-white` sobre `bg-destructive/60`, que dá 5,5:1 |
 | `--attention` | #a46a18 | #e6a94f | 8,1:1 |
 | `--accent` / `--accent-foreground` | #eef7ec / #125d13 | #1f3120 / #b9dcb4 | 9,2:1 no par (selo e aviso) |
-| `--brand-50` … `--brand-950` | claro → escuro | **invertida** | `bg-brand-50` continua "superfície sutil" e `text-brand-800` continua "texto forte" nos dois temas; as séries de gráfico (`chart-1..5`) seguem a rampa e ficam legíveis |
+| `--brand-50` … `--brand-950` | claro → escuro | **invertida** | `bg-brand-50` continua "superfície sutil" e `text-brand-800` continua "texto forte" nos dois temas. **Série de gráfico não sai daqui** — sai de `--data-*` (§12); da rampa da marca só a sequencial de magnitude aproveita quatro passos |
 | `--border-soft` | rgba(…, 0.38) | rgba(…, 0.16) | no escuro o filete translúcido clareia; a mesma opacidade viraria uma linha branca |
 | `color-scheme` | light | dark | escurece `<input type="date">`, scrollbar e seleção nativos |
 
@@ -596,7 +606,9 @@ numa tela do que `text-muted-foreground`.
 
 | Apelido | Aponta para | Para que serve |
 | --- | --- | --- |
-| `brand-50`…`brand-950` | rampa própria; o `700` **é** `--primary` | Séries de gráfico, superfícies de marca |
+| `brand-50`…`brand-950` | rampa própria; o `700` **é** `--primary` | Superfícies de marca. **Não** é cor de série (§12) |
+| `data-1`…`data-8` | `--data-*` | Cor de série de gráfico, em ordem fixa |
+| `data-seq-1`…`data-seq-4` | `--data-seq-*` | Magnitude: mapa de calor, matriz |
 | `ground` | `--background` | Fundo da tela |
 | `paper` / `paper-sunken` | `--card` / `--muted` | Superfície de componente / área rebaixada dentro dela |
 | `nav`, `nav-text`, `nav-active`, `nav-hover` | `--card`, `--muted-foreground`, `--primary`, `--accent` | Menu lateral |
@@ -649,10 +661,24 @@ Tailwind e usa valor arbitrário em vez de `text-sm`:
   texto — a única cor fora da paleta, e logo onde mais se olha. O par já é
   escolhido para ter contraste nos dois temas, então a seleção acompanha o tema
   sem inventar cor nova.
+  A regra vale para o que a interface **é** — botão, link, foco, seleção, ativo
+  de menu. **Não vale para matiz de dado**: dentro de um gráfico a cor
+  identifica uma série, não sinaliza nada, e por isso a rampa de dados (§12)
+  tem azul e tem vermelho sem que isso queira dizer "atenção". A distinção
+  existe porque cinco verdes vizinhos são ilegíveis numa barra de 12px — está
+  medido no §12.
 - **Contraste.** `primary` (#156b16) dá 6,7:1 sobre branco e passa em corpo de
   texto, botão e ícone. `ink-secondary` (#5f675c) dá 5,9:1. **`ink-muted`
   (#7c8579) dá 3,8:1** — serve para rótulo de cabeçalho em caixa alta e
-  semibold, **nunca** para corpo de texto.
+  semibold, **nunca** para corpo de texto. São três lugares, e só eles:
+  rótulo em caixa alta, controle desabilitado (a WCAG isenta o inativo) e
+  glifo decorativo com `aria-hidden` (lupa do campo de busca, chevron,
+  separador, ponto do `Status`), que responde ao piso de 3:1 de componente,
+  não ao de texto. Todo o resto é `ink-secondary`: dica de campo, placeholder
+  de `SelectMenu`, `Code`, `Dash`, o "+N" de etiquetas ocultas e o texto de
+  estado vazio. E os 3,8:1 são medidos sobre branco ou `card` — sobre
+  `brand-50` ou `paper-sunken` o mesmo cinza cai para ~3,5:1, então até o
+  rótulo em caixa alta vira `ink-secondary` quando o fundo não é o branco.
 - Verde é indicador positivo ou estado vivo; âmbar é atenção; vermelho é
   atraso, risco ou ação destrutiva.
 - **Toda cor existe nos dois temas.** Um par que passa no claro pode falhar
@@ -699,7 +725,7 @@ precisa reaplicar depois de qualquer `add`.
 | `popover.tsx` | `Popover` do `radix-ui` | `rounded-xl border-rule-table shadow-lg` **e `pointer-events-auto`** — ver §9.3 |
 | `command.tsx` | `cmdk` | `rounded-xl`; item `rounded-lg text-[13px]`, selecionado `bg-accent`; **filtro sem acento** — ver §9.3 |
 | `tabs.tsx` | `Tabs` do `radix-ui` | Lista `h-10 rounded-xl bg-muted p-1`; gatilho ativo `bg-card text-primary shadow-sm` |
-| `chart.tsx` | `recharts` | Wrapper padrão do shadcn; só entra se houver gráfico |
+| `chart.tsx` | `recharts` | Wrapper padrão do shadcn, sem diff: ele já traduz os `#ccc` internos do recharts para os tokens. Só entra se houver gráfico, e a cor das séries vem do `ChartConfig` (§12.1), nunca de um `fill` cravado |
 
 Dois acréscimos que o CLI não gera e este design precisa:
 
@@ -836,6 +862,43 @@ Pagination({ page, lastPage, total, unit, busy?, onPrevious, onNext })
 `<thead>`/`<tbody>` são montados na mão pelas telas, então o filete que o
 `TableHeader`/`TableBody` colocaria vem de `Th`/`Td`.
 
+### 8.7 Gráficos e painel
+
+```tsx
+corDeSerie(indice)                          // → 'var(--data-N)', índice do CONTRATO
+tomDeIntensidade(valor, maximo)             // → passo da rampa sequencial; null → --muted
+Delta({ valor, inverso?, sufixo? })         // variação; inverso = melhora caindo
+Sparkline({ valores, className? })          // tendência sem eixo, cor por currentColor
+GradeKpi({ children })                      // a faixa de números que abre o painel
+Kpi({ rotulo, valor, delta?, hint?, grafico? })
+GradeGraficos({ children })                 // duas colunas a partir de lg
+PainelGrafico({ titulo, hint?, acoes?, altura?, largura?, rodape?, children })
+```
+
+Mais os primitivos do recharts, reexportados daqui para a tela importar de um
+lugar só: `ChartContainer`, `ChartTooltip`, `ChartTooltipContent`,
+`ChartLegend`, `ChartLegendContent` e o tipo `ChartConfig`.
+
+`PainelGrafico` é quem define o tamanho, e o gráfico preenche o que recebeu —
+a proporção do desenho é a do componente, não uma constante escrita no arquivo
+(§12.1). Existe por uma razão mecânica, não estética: o
+`ResponsiveContainer` do recharts mede **o pai**, e pai sem altura mede zero —
+o gráfico simplesmente não aparece, sem erro no console. A altura vive no
+`PainelGrafico` (`padrao` 220px, `alta` 320px) em vez de virar um `h-[240px]`
+copiado por seis telas. `acoes` é onde mora o par Gráfico/Tabela.
+
+`corDeSerie` recebe a posição da série **no contrato** — a ordem em que o
+backend devolve as dimensões, os anos, as categorias —, nunca o índice do array
+já filtrado. Cor que anda quando um filtro apaga uma série faz o leitor
+comparar duas coisas diferentes achando que compara a mesma.
+
+`Delta` é cinza abaixo de 0,05 p.p.: ruído não é conquista. `inverso` é para o
+que melhora caindo — turnover, custo, prazo de entrega, ruptura.
+
+`GradeGraficos` é de duas colunas, e `largura="total"` é a única saída para o
+gráfico ímpar que sobraria sozinho na última faixa — com a condição do §9.7: a
+faixa inteira é para quem tem o que fazer com ela.
+
 ---
 
 ## 9. Padrões de tela
@@ -965,6 +1028,66 @@ cartão (um `SelectMenu`), que funciona no teclado e no toque, respeita
 permissão e não custa uma biblioteca de drag-and-drop. Uma tela que só oferece
 o arrastar exclui quem navega por teclado.
 
+### 9.7 Painel — a tela de BI
+
+Um painel se lê de cima para baixo, em três alturas, e **cada altura responde a
+uma pergunta diferente**:
+
+1. **`GradeKpi` com quatro `Kpi`, no máximo.** Quantos, quanto, como está
+   contra o período anterior. Se o quinto número parecia essencial, ele não
+   era: KPI é o que se olha primeiro, não o índice de tudo que existe.
+2. **Dois a quatro gráficos.** Cada um responde a *uma* pergunta que o número
+   de cima levantou. Painel com oito gráficos não é denso, é indeciso.
+3. **A tabela.** É o destino de todo clique de gráfico e o lugar onde o dado
+   vira ação — abrir o item, editar, atribuir.
+
+**Um filtro só, no topo, valendo para a tela inteira** (`Toolbar` do §8.2, com
+o ciclo/período do `AdminLayout`). Cada gráfico com o seu próprio seletor de
+período é a forma mais barata de fazer dois números da mesma tela discordarem.
+
+**O gráfico é porta de entrada da tabela, não o fim da leitura.** Clicar numa
+barra filtra a tabela abaixo — e é isso que "drill-down" significa aqui:
+`onClick` no `<Bar>` mudando o mesmo estado de filtro que a `Toolbar` muda.
+Não é recurso de biblioteca, são três linhas. Duas regras: o clique tem que ter
+alvo maior que a marca (a faixa da categoria inteira, não a barra de 12px), e
+a barra ativa é a única em opacidade cheia — as outras caem para `opacity-30`,
+para o filtro ficar visível sem uma segunda legenda explicando.
+
+**Três estados, e "carregando" não é um deles no lugar do vazio:**
+
+| Situação | O que a tela mostra |
+| --- | --- |
+| Buscando | esqueleto com a **altura final** do gráfico — sem pulo de layout quando o dado chega |
+| Sem nenhum dado | `EmptyState` dentro do `PainelGrafico`, com a ação que cria o primeiro dado |
+| Dado insuficiente | o gráfico **não** é desenhado: uma frase diz quantos períodos faltam. Uma linha de dois pontos é um gráfico mentindo sobre uma tendência |
+
+**Nada fica sozinho numa faixa.** A grade de gráficos é de duas colunas
+(`GradeGraficos`), e um número ímpar deixa o último num cartão órfão com meia
+tela de vazio ao lado — que o olho lê como "faltou alguma coisa aqui", não como
+espaço. O órfão tem duas saídas, e só duas:
+
+- **ocupa a faixa inteira** (`PainelGrafico largura="total"`) — e aí ele
+  precisa *merecer* a largura. Merecem: série temporal longa (oito meses ganham
+  em ficar largos), mapa de calor, matriz, barra empilhada com muitas
+  categorias, qualquer coisa cujo eixo x tenha o que dizer. Não merecem: quatro
+  barras, um donut, dois números. Esticar um gráfico de quatro categorias por
+  1200px não o torna mais legível, torna o vazio mais caro;
+- **deixa de ser gráfico**: sobe para a linha de cima como `Kpi`, ou vira uma
+  coluna da tabela.
+
+Vale para qualquer componente na última faixa, não só gráfico. E vale ao
+contrário também: se o candidato a faixa inteira não justifica a largura, o
+painel tem um gráfico a mais, não uma linha a menos.
+
+Cada `PainelGrafico` traz o par **Gráfico/Tabela** em `acoes`. Não é enfeite de
+acessibilidade: três slots da rampa de dados ficam abaixo de 3:1 sobre o branco
+(§12), leitor de tela não lê barra, e quem precisa do número exato para colar
+num relatório precisa da tabela de qualquer jeito.
+
+O painel **não** rola dentro de si mesmo: quem rola é a área de conteúdo do
+`AdminLayout` (§10). Painel com scroll próprio dentro de uma janela que já não
+rola é a receita de dois scrolls disputando a roda do mouse.
+
 O contador no cabeçalho é o total **da fase**, não o que está visível.
 
 ---
@@ -1061,11 +1184,117 @@ intrínseca posto numa coluna flex.
 
 ## 12. Gráficos
 
-Só onde há gráfico. `recharts` + o wrapper `chart.tsx` do shadcn
-(`ChartContainer` + `ChartConfig`), que reescreve os `stroke="#ccc"` internos do
-recharts para as cores do tema. As séries usam a rampa `brand-*`; eixo e grade
-em `muted-foreground`/`border`. Barra empilhada para série temporal; nada de
-pizza em painel operacional.
+Duas leituras antes desta: o skill **`dataviz`** responde *qual forma usar* —
+se é gráfico mesmo ou um número solto, magnitude x identidade x polaridade,
+formato de eixo, camada de hover, o catálogo de anti-padrões. Este §12 responde
+o que é **desta casa**: qual cor, qual biblioteca, dentro de qual moldura.
+
+### 12.1 A biblioteca
+
+`recharts` + o wrapper `chart.tsx` do shadcn (`ChartContainer` + `ChartConfig`),
+que reescreve os `stroke="#ccc"` cravados no recharts para as cores do tema. É
+dependência **só de projeto que tem gráfico**; sem gráfico, o `chart.tsx` e o
+bloco 8.7 do `page.tsx` saem do projeto.
+
+A tela importa tudo do `page.tsx`, nunca do `recharts` direto. Um gráfico é:
+
+```tsx
+const config = {
+  realizado: { label: 'Realizado', color: corDeSerie(0) },
+  meta:      { label: 'Meta',      color: corDeSerie(1) },
+} satisfies ChartConfig;
+
+<PainelGrafico titulo="Receita líquida" hint="R$ mil · ciclo 2026" acoes={<AlternaVisao />}>
+  <ChartContainer config={config} className="h-full w-full">
+    <BarChart data={linhas} onClick={(e) => filtrarPor(e?.activeLabel)}>
+      <CartesianGrid vertical={false} />
+      <XAxis dataKey="periodo" tickLine={false} axisLine={false} />
+      <ChartTooltip content={<ChartTooltipContent />} />
+      <ChartLegend content={<ChartLegendContent />} />
+      <Bar dataKey="realizado" fill="var(--color-realizado)" radius={4} />
+    </BarChart>
+  </ChartContainer>
+</PainelGrafico>
+```
+
+O `className="h-full w-full"` não é opcional: o `ChartContainer` vem com
+`aspect-video`, e dentro da altura fixa do `PainelGrafico` isso brigaria.
+
+**O desenho segue a proporção do componente, sempre.** Quem manda na largura e
+na altura é o `PainelGrafico`; o gráfico preenche o que recebeu. Um gráfico
+desenhado num tamanho fixo dentro de um painel maior fica centralizado com
+sobra dos dois lados — e a sobra lê como erro, ainda mais numa faixa inteira,
+onde ela é o dobro. No recharts isso é de graça: o `ResponsiveContainer` mede o
+pai a cada mudança de tamanho, e é exatamente por isso que o pai **precisa** de
+altura. Em SVG escrito à mão (`Sparkline`, mapa de calor, matriz), o `viewBox`
+é o tamanho medido do container, não uma constante — e redesenha quando o
+container muda.
+
+**Escape hatch: ECharts.** Se uma spec pedir sankey, treemap, mapa geográfico
+ou zoom numa série de milhares de pontos, o recharts não desenha — aí entra
+`echarts` **naquela tela**, com um `tema.ts` que lê os tokens por
+`getComputedStyle` e refaz o gráfico quando o tema muda (o ECharts tematiza por
+objeto JS, não por CSS, e é esse o custo). Duas bibliotecas de gráfico no mesmo
+bundle sem essa justificativa é defeito. Tremor, Nivo e AG Charts estão fora
+por motivo diferente: trazem o próprio sistema de cor e de forma, e o kit já
+tem um (§7).
+
+### 12.2 A cor tem quatro trabalhos, não um
+
+| Trabalho | Token | Quando |
+| --- | --- | --- |
+| **Identidade** — qual série é qual | `--data-1` … `--data-8` | categórico: dimensões, anos, produtos |
+| **Magnitude** — quanto | `--data-seq-1` … `--data-seq-4` | mapa de calor, matriz de risco, intensidade |
+| **Polaridade** — para que lado | dois polos + neutro | variação contra a meta. Não existe pronto: nasce em `:root` **e** `.dark` no dia em que a primeira tela precisar, com **cinza** no meio, nunca uma terceira matiz |
+| **Estado** — bom, atenção, risco | `primary`, `attention`, `alert` | é a paleta do `Status` (§8.4), e ela **não** empresta slot para série |
+
+A rampa de dados é a paleta de referência do skill `dataviz`, adotada inteira
+em vez de calibrada aqui — a manutenção e a validação são de lá. Ordem fixa: a
+série 3 usa `--data-3` mesmo que um filtro apague a 2 (§8.7, `corDeSerie`).
+
+**Por que não a rampa `brand-*`, que este documento mandava usar até então:**
+medida com o validador do `dataviz`, ela reprova. Três dos cinco tons caem fora
+da faixa de luminosidade, e `brand-400` contra `brand-600` dá ΔE 12,7 na visão
+**normal** — abaixo do piso de 15. O problema nem chega a ser daltonismo:
+ninguém distingue dois verdes vizinhos numa barra de 12px. A rampa da marca
+continua ótima no trabalho para o qual ela serve, que é o segundo da tabela.
+
+**Série não é estado.** Verde e vermelho aparecem na rampa de dados como
+matiz, não como julgamento. Quando o gráfico é *sobre* estado — barras de "no
+prazo / atrasado / em risco" — aí sim ele usa a paleta do `Status`, e cada
+segmento leva **rótulo**, não só cor.
+
+**Contraste e a regra de alívio.** Os slots 3, 4 e 5 ficam abaixo de 3:1 contra
+o branco (2,82 · 2,17 · 2,69). Isso não os proíbe: obriga o gráfico onde eles
+aparecem a trazer rótulo direto ou a visão de tabela — que o `PainelGrafico` já
+pede em `acoes`. No escuro os oito passam de 3:1.
+
+### 12.3 O que não se faz
+
+- **Nunca dois eixos Y.** Duas medidas de escala diferente viram dois gráficos,
+  pequenos múltiplos, ou ambas indexadas a uma base comum. É o erro nº 1 de
+  gráfico e ele *sempre* aparece com cara de economia de espaço.
+- **Pizza não entra em tela operacional.** Ângulo se compara mal; a mesma
+  pergunta cabe numa barra ordenada, que ainda dá o valor de cada fatia.
+- **Legenda sempre, a partir de duas séries** — e com até quatro, rótulo direto
+  também. Identidade nunca é só cor.
+- Grade e eixo são recessivos: `border`/`muted-foreground`, sem linha vertical,
+  sem moldura em volta do desenho.
+- Número em toda marca não é informação, é poeira: rotule os extremos e o
+  último ponto.
+- Eixo de valor **começa em zero** em gráfico de barra. Truncar a base
+  multiplica visualmente uma diferença de 2%.
+
+### 12.4 Acessibilidade e formato
+
+- Texto do gráfico usa token de tinta (`ink`, `ink-secondary`), nunca a cor da
+  série: rótulo colorido some sobre o branco e some de novo no escuro.
+- Toda tela de gráfico tem a **visão de tabela**, e ela é a versão acessível —
+  não um extra.
+- Moeda, percentual e data formatados em pt-BR (`toLocaleString('pt-BR')`), com
+  `tabular-nums` (já é global, §2). Milhar abreviado só no eixo ("1,2 mi"), o
+  valor cheio no tooltip.
+- Sem dado é `Dash` também no gráfico: barra de altura zero afirma "zero".
 
 ---
 
@@ -1098,7 +1327,9 @@ pizza em painel operacional.
 2. Troque **só** os valores de `--primary`, `--accent`, `--ring` e a rampa
    `--brand-*` pela cor da nova marca, nos blocos `:root` **e** `.dark`.
    Mantenha o formato `hsl(...)` e o hex no comentário ao lado. Nenhum
-   `@theme` precisa mudar.
+   `@theme` precisa mudar. A rampa de dados (`--data-*`) **não** acompanha a
+   marca: ela é neutra de propósito e validada como um conjunto (§12.2) —
+   recolorir um slot para "combinar" quebra a separação entre as séries.
 3. Verifique o contraste da nova primária sobre branco e sobre `--card` do
    escuro: **mínimo 4,5:1** para texto e ícone nos dois temas. Abaixo disso,
    escureça (no claro) ou clareie (no escuro) a primária em vez de aceitar.
@@ -1115,7 +1346,9 @@ pizza em painel operacional.
 - Selo preenchido dentro de célula de tabela.
 - Zebra ou fundo alternado de linha.
 - Inativo pintado de vermelho.
-- `ink-muted` em corpo de texto.
+- `ink-muted` em corpo de texto — dica de campo, `Code`, `Dash`, estado
+  vazio e placeholder são `ink-secondary`; e rótulo em caixa alta sobre
+  `brand-50` ou `paper-sunken` também, que ali o 3,8:1 cai abaixo do piso.
 - Azul como acento estrutural.
 - Botão escondido por falta de permissão em vez de desabilitado.
 - `0` ou `R$ 0,00` onde o dado simplesmente não existe — é `Dash`.
@@ -1135,3 +1368,26 @@ pizza em painel operacional.
   (§11) — foi assim que a assinatura foi parar esticada na tela de login.
 - `maxLength` num campo que filtra o valor no `onChange` (código de 6 dígitos):
   o atributo conta os caracteres sujos do DOM e engole dígitos bons (§10.1).
+- **Dois eixos Y** no mesmo gráfico (§12.3). Reprova sozinho.
+- Pizza em tela operacional; barra com eixo truncado; número em cima de toda
+  marca; gráfico com duas ou mais séries sem legenda.
+- Série pintada com cor de estado (`primary`, `attention`, `alert`) quando o
+  gráfico não é sobre estado — e o inverso: estado sinalizado só por cor,
+  sem rótulo (§12.2).
+- Cor de série derivada do índice do array **já filtrado**: some uma série e
+  todas as outras trocam de cor (§8.7, `corDeSerie`).
+- `var(--chart-1)` colado de um exemplo do shadcn: o token daqui é `--data-1`.
+- `<ResponsiveContainer>` (ou `ChartContainer`) dentro de um pai sem altura —
+  o gráfico não desenha e não há erro no console. A altura mora no
+  `PainelGrafico` (§8.7).
+- Rótulo ou eixo pintado com a cor da série em vez de token de tinta.
+- Cada gráfico do painel com o seu próprio seletor de período (§9.7).
+- Gráfico desenhado com dois ou três pontos, fingindo tendência.
+- **Gráfico órfão**: o último de um número ímpar sobrando numa metade da grade,
+  com meia faixa vazia ao lado. Ou ocupa a faixa inteira, ou não é gráfico
+  (§9.7).
+- Gráfico esticado por uma faixa inteira sem ter o que fazer com ela — quatro
+  barras ocupando 1200px. A largura é do dado, não do buraco no layout.
+- Gráfico desenhado em tamanho fixo dentro de um painel maior, sobrando espaço
+  dos dois lados. O desenho segue a proporção do componente (§12.1) — em SVG à
+  mão, `viewBox` é o tamanho **medido** do container, nunca uma constante.

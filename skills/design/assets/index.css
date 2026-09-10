@@ -69,6 +69,36 @@
      solto em componente. */
   --brand-mark: #45963d;
 
+  /* ── Rampa de DADOS — cor de série de gráfico (design.md §12) ──
+     Oito matizes em ORDEM FIXA: a série 3 usa --data-3 mesmo que um filtro
+     apague a 2. Não é a rampa da marca: cinco verdes vizinhos são
+     indistinguíveis numa barra de 12px (medido: ΔE 12,7 na visão normal,
+     abaixo do piso 15). Também não é paleta de estado — o verde e o vermelho
+     daqui são matiz, não julgamento, e é por isso que estado em gráfico leva
+     rótulo e ícone além da cor.
+     Origem: paleta de referência do skill `dataviz`, validada contra #ffffff
+     (fundo do Panel) e contra o --card escuro: pior par adjacente ΔE 9,1 /
+     8,4 em daltonismo e 19,6 / 19,3 na visão normal.
+     Os slots 3, 4 e 5 ficam abaixo de 3:1 contra o branco: onde eles
+     aparecem, o gráfico traz rótulo direto ou a visão de tabela. */
+  --data-1: hsl(212.8 67.7% 50.2%);            /* #2a78d6 — azul */
+  --data-2: hsl(17 82.1% 56.3%);               /* #eb6834 — laranja */
+  --data-3: hsl(158.5 73.3% 39.6%);            /* #1baf7a — água */
+  --data-4: hsl(40.8 100% 46.5%);              /* #eda100 — amarelo */
+  --data-5: hsl(337.4 70.3% 69.6%);            /* #e87ba4 — magenta */
+  --data-6: hsl(120 100% 25.7%);               /* #008300 — verde */
+  --data-7: hsl(248.8 48.4% 44.1%);            /* #4a3aa7 — violeta */
+  --data-8: hsl(0.4 73.5% 58.6%);              /* #e34948 — vermelho */
+
+  /* Rampa SEQUENCIAL — magnitude (mapa de calor, matriz de risco). Uma matiz
+     só, claro→escuro. Quatro passos, não a rampa brand-* inteira: brand-50 e
+     brand-100 distam 0,043 de luminosidade e o passo mais claro fica em
+     1,10:1 contra o branco — invisível. Estes quatro passam nos dois temas. */
+  --data-seq-1: hsl(114.7 34% 60.8%);          /* #7fbd79 — 2,22:1 sobre branco */
+  --data-seq-2: var(--brand-400);              /* #4f9f50 */
+  --data-seq-3: var(--brand-600);              /* #1a7a1b */
+  --data-seq-4: var(--brand-900);              /* #0f4a10 */
+
   --radius: 0.75rem;
 
   color-scheme: light;
@@ -135,6 +165,27 @@
   /* A marca não muda com o tema. Onde o verde dela não lê (monograma sobre
      accent), o componente troca para accent-foreground — ver Logo.tsx. */
   --brand-mark: #45963d;
+
+  /* Rampa de DADOS no escuro (design.md §12). Mesmas oito matizes, repassadas
+     para a superfície escura — não é o claro invertido, e a ordem é a mesma:
+     trocar a ordem é trocar a cor de uma série que já está no ar. Aqui os oito
+     passam de 3:1 contra o --card, então o rótulo direto vira escolha, não
+     obrigação. O verde é o mesmo #008300 nos dois temas: já estava na banda. */
+  --data-1: hsl(212.8 76.8% 56.1%);            /* #3987e5 — azul */
+  --data-2: hsl(17.1 70.2% 50%);               /* #d95926 — laranja */
+  --data-3: hsl(159.2 72.7% 35.9%);            /* #199e70 — água */
+  --data-4: hsl(39.7 100% 39.4%);              /* #c98500 — amarelo */
+  --data-5: hsl(338.2 61.1% 57.6%);            /* #d55181 — magenta */
+  --data-6: hsl(120 100% 25.7%);               /* #008300 — verde */
+  --data-7: hsl(246.6 69.4% 71.8%);            /* #9085e9 — violeta */
+  --data-8: hsl(0 71.8% 65.3%);                /* #e66767 — vermelho */
+
+  /* Sequencial no escuro: a mesma matiz, subindo em vez de descer — o passo
+     mais escuro é o "pouco", porque aqui o fundo é que é escuro. */
+  --data-seq-1: var(--brand-300);              /* #3b6d39 — 2,72:1 sobre o card */
+  --data-seq-2: var(--brand-400);              /* #4f9f50 */
+  --data-seq-3: var(--brand-500);              /* #6cba6c */
+  --data-seq-4: hsl(116.8 39.9% 72%);          /* #9ed49b */
 
   /* Controles nativos (date, scrollbar, seleção) escurecem junto. */
   color-scheme: dark;
@@ -210,12 +261,22 @@
   --color-alert: var(--destructive);
   --color-alert-bg: var(--destructive-bg);
 
-  /* Séries de gráfico — a rampa da marca (design.md §12). */
-  --color-chart-1: var(--brand-600);
-  --color-chart-2: var(--brand-400);
-  --color-chart-3: var(--brand-800);
-  --color-chart-4: var(--brand-300);
-  --color-chart-5: var(--brand-900);
+  /* Séries de gráfico — a rampa de dados (design.md §12). O nome é `data-N`,
+     não `chart-N`: exemplo colado do shadcn que pede var(--chart-1) troca o
+     token, não ganha um apelido. Duas famílias para a mesma cor é a receita
+     de duas fontes de verdade. */
+  --color-data-1: var(--data-1);
+  --color-data-2: var(--data-2);
+  --color-data-3: var(--data-3);
+  --color-data-4: var(--data-4);
+  --color-data-5: var(--data-5);
+  --color-data-6: var(--data-6);
+  --color-data-7: var(--data-7);
+  --color-data-8: var(--data-8);
+  --color-data-seq-1: var(--data-seq-1);
+  --color-data-seq-2: var(--data-seq-2);
+  --color-data-seq-3: var(--data-seq-3);
+  --color-data-seq-4: var(--data-seq-4);
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);

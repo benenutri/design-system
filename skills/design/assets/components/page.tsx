@@ -10,7 +10,18 @@
  * nome aqui ou o primitivo está mal ajustado — corrija aqui, não na tela.
  */
 import * as React from 'react';
-import { Check, ChevronDown, ChevronLeft, ChevronRight, Search, SlidersHorizontal, X } from 'lucide-react';
+import {
+  ArrowDownRight,
+  ArrowUpRight,
+  Check,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  Minus,
+  Search,
+  SlidersHorizontal,
+  X,
+} from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Button as ButtonPrimitive } from '@/components/ui/button';
@@ -43,6 +54,17 @@ export {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+/* Gráfico (§12): a tela importa tudo daqui, como importa Table e SelectMenu.
+   `recharts` só é dependência de projeto que tem gráfico — se não tiver,
+   apague estas duas linhas e o bloco 8.7 lá embaixo. */
+export {
+  ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
+  ChartTooltip,
+  ChartTooltipContent,
+} from '@/components/ui/chart';
+export type { ChartConfig } from '@/components/ui/chart';
 
 // ── 8.1 Estrutura de tela ─────────────────────────────────────────────────
 
@@ -294,7 +316,7 @@ export function SelectMenu({
             'flex h-9 w-full items-center justify-between gap-2 rounded-xl border border-input bg-card px-3 text-[13px] text-ink shadow-xs transition-colors',
             'focus-visible:border-brand-400 focus-visible:ring-2 focus-visible:ring-ring/25 focus-visible:outline-none',
             'disabled:pointer-events-none disabled:bg-muted disabled:text-ink-muted',
-            !selected && 'text-ink-muted',
+            !selected && 'text-ink-secondary',
             className
           )}
         >
@@ -371,7 +393,7 @@ export function Field({
         {obrigatorio ? <MarcaObrigatorio /> : null}
       </span>
       {children}
-      {hint ? <span className="text-[12px] text-ink-muted">{hint}</span> : null}
+      {hint ? <span className="text-[12px] text-ink-secondary">{hint}</span> : null}
     </div>
   );
 }
@@ -403,7 +425,7 @@ export function LabelledField({
       </span>
       {children}
       {hint ? (
-        <span className={cn('text-[12px]', hintTone === 'error' ? 'text-destructive' : 'text-ink-muted')}>
+        <span className={cn('text-[12px]', hintTone === 'error' ? 'text-destructive' : 'text-ink-secondary')}>
           {hint}
         </span>
       ) : null}
@@ -527,7 +549,7 @@ export function CheckRow({
       </span>
       <span className="flex min-w-0 flex-col">
         <span className={marcado ? 'text-ink' : 'text-ink-secondary'}>{children}</span>
-        {hint ? <span className="text-[12px] text-ink-muted">{hint}</span> : null}
+        {hint ? <span className="text-[12px] text-ink-secondary">{hint}</span> : null}
       </span>
     </button>
   );
@@ -635,7 +657,7 @@ export function EtiquetaLista({
         </Badge>
       ))}
       {ocultas > 0 ? (
-        <span className="text-[12px] text-ink-muted" title={etiquetas.map((e) => e.nome).join(', ')}>
+        <span className="text-[12px] text-ink-secondary" title={etiquetas.map((e) => e.nome).join(', ')}>
           +{ocultas}
         </span>
       ) : null}
@@ -704,7 +726,7 @@ export function Code({
   className?: string;
 }) {
   return (
-    <span className={cn('text-[12px] whitespace-nowrap text-ink-muted', className)}>
+    <span className={cn('text-[12px] whitespace-nowrap text-ink-secondary', className)}>
       {prefix ? <span className="mr-0.5">{prefix}</span> : null}
       {children}
     </span>
@@ -714,7 +736,7 @@ export function Code({
 /** Ausência de dado. Nunca 0, nunca R$ 0,00 — isso seria afirmar um valor. */
 export function Dash() {
   return (
-    <span className="text-ink-muted" aria-label="sem informação">
+    <span className="text-ink-secondary" aria-label="sem informação">
       —
     </span>
   );
@@ -910,5 +932,187 @@ export function Pagination({
         </Button>
       </div>
     </div>
+  );
+}
+
+// ── 8.7 Gráficos e painel ─────────────────────────────────────────────────
+
+/**
+ * A cor de uma série. O índice é a POSIÇÃO DA SÉRIE NO CONTRATO — a ordem em
+ * que o backend devolve as dimensões, os anos, as categorias —, nunca o índice
+ * do array já filtrado: se o filtro apagar a série 2, a série 3 continua
+ * `--data-3`. Cor que anda quando o filtro muda faz o leitor comparar duas
+ * coisas diferentes achando que compara a mesma (design.md §12).
+ */
+export function corDeSerie(indice: number) {
+  return `var(--data-${(indice % 8) + 1})`;
+}
+
+/**
+ * Cor de célula por intensidade — mapa de calor, matriz de risco. Quatro
+ * passos da rampa sequencial; ausência de dado devolve o fundo rebaixado, que
+ * é o `Dash` da cor: célula vazia não é célula de valor mínimo.
+ */
+export function tomDeIntensidade(valor: number | null, maximo: number) {
+  if (valor === null || maximo <= 0) return 'var(--muted)';
+  const passo = Math.min(4, Math.max(1, Math.ceil((valor / maximo) * 4)));
+  return `var(--data-seq-${passo})`;
+}
+
+/**
+ * Variação contra o período anterior ou contra a meta. `inverso` é para o que
+ * melhora caindo — turnover, custo, prazo, ruptura: aí o vermelho é a subida.
+ * Variação abaixo de 0,05 p.p. é cinza, não verde: ruído não é conquista.
+ */
+export function Delta({
+  valor,
+  inverso,
+  sufixo = '%',
+}: {
+  valor: number | null;
+  inverso?: boolean;
+  sufixo?: string;
+}) {
+  if (valor === null) return <Dash />;
+  const parado = Math.abs(valor) < 0.05;
+  const bom = inverso ? valor < 0 : valor > 0;
+  const tom = parado ? 'text-ink-secondary' : bom ? 'text-primary' : 'text-destructive';
+  const Icone = parado ? Minus : valor > 0 ? ArrowUpRight : ArrowDownRight;
+  return (
+    <span className={cn('inline-flex items-center gap-0.5 text-[12px] font-medium', tom)}>
+      <Icone className="size-3.5" aria-hidden />
+      {/* O sinal já está na seta; repetir "+" é ruído. */}
+      {Math.abs(valor).toLocaleString('pt-BR', { maximumFractionDigits: 1 })}
+      {sufixo}
+    </span>
+  );
+}
+
+/**
+ * Linha de tendência sem eixo e sem lib: mora dentro de um Kpi ou de uma
+ * célula, e existe para dar direção ao número ao lado, não para ser lida em
+ * valor. A última leitura ganha o ponto — é a única que o olho procura.
+ * A cor vem do `text-*` de quem chama (`currentColor`).
+ *
+ * Tamanho fixo de propósito: sparkline é glifo de linha de texto, e glifo tem
+ * tamanho de glifo. A regra da proporção do §12.1 — o desenho segue o
+ * container — vale para o gráfico que ocupa um `PainelGrafico`.
+ */
+export function Sparkline({ valores, className }: { valores: number[]; className?: string }) {
+  if (valores.length < 2) return <Dash />;
+  const min = Math.min(...valores);
+  const max = Math.max(...valores);
+  const amplitude = max - min || 1;
+  const x = (i: number) => (i / (valores.length - 1)) * 56 + 2;
+  const y = (v: number) => 16 - ((v - min) / amplitude) * 14;
+  const d = valores.map((v, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
+  return (
+    <svg
+      viewBox="0 0 60 18"
+      className={cn('h-[18px] w-[60px] text-primary', className)}
+      aria-hidden
+      focusable="false"
+    >
+      <path d={d} fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinejoin="round" strokeLinecap="round" />
+      <circle cx={x(valores.length - 1)} cy={y(valores[valores.length - 1])} r={2} fill="currentColor" />
+    </svg>
+  );
+}
+
+/** A faixa de números que abre um painel. Some abaixo de `sm` para uma coluna. */
+export function GradeKpi({ children }: { children: React.ReactNode }) {
+  return <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">{children}</div>;
+}
+
+/**
+ * Um número com nome. O valor é o que se lê de longe; o resto é apoio.
+ * Sem dado é `Dash`, nunca 0 — a regra da tabela vale aqui (§8.6).
+ */
+export function Kpi({
+  rotulo,
+  valor,
+  delta,
+  hint,
+  grafico,
+}: {
+  rotulo: string;
+  valor: React.ReactNode;
+  delta?: React.ReactNode;
+  hint?: React.ReactNode;
+  grafico?: React.ReactNode;
+}) {
+  return (
+    <div className="flex flex-col gap-1 rounded-xl border border-rule-row bg-card p-4">
+      <p className="text-[11px] font-semibold tracking-wide text-ink-muted uppercase">{rotulo}</p>
+      <div className="flex items-end justify-between gap-2">
+        <div className="flex items-baseline gap-2">
+          <span className="font-title text-2xl font-bold text-ink">{valor}</span>
+          {delta}
+        </div>
+        {grafico}
+      </div>
+      {hint ? <p className="text-[12px] text-ink-secondary">{hint}</p> : null}
+    </div>
+  );
+}
+
+/**
+ * A grade de gráficos do painel: duas colunas a partir de `lg`. Número ímpar
+ * de gráficos deixa o último órfão, com meia faixa vazia ao lado — o último
+ * então é `largura="total"`, e só se o dado justificar a largura (§9.7).
+ */
+export function GradeGraficos({ children }: { children: React.ReactNode }) {
+  return <div className="grid gap-3 lg:grid-cols-2">{children}</div>;
+}
+
+/**
+ * A moldura de um gráfico. Existe por uma razão mecânica: o
+ * `ResponsiveContainer` do recharts mede o PAI, e pai sem altura mede zero —
+ * o gráfico some sem erro nenhum no console. A altura vive aqui, uma vez, em
+ * vez de virar `h-[240px]` copiado por seis telas.
+ *
+ * `acoes` é onde mora o par Gráfico/Tabela: todo gráfico deve poder virar
+ * tabela, porque três slots da rampa não alcançam 3:1 sobre o branco e porque
+ * leitor de tela não lê barra (§12).
+ *
+ * `largura="total"` é para o gráfico que ocupa a faixa inteira da
+ * `GradeGraficos`. Não é o remédio de qualquer sobra: quatro barras esticadas
+ * por 1200px não ficam mais legíveis. Merecem a faixa a série temporal longa,
+ * o mapa de calor, a matriz, a pilha de muitas categorias — o que tem o que
+ * fazer com o eixo x (§9.7).
+ */
+export function PainelGrafico({
+  titulo,
+  hint,
+  acoes,
+  altura = 'padrao',
+  largura = 'padrao',
+  rodape,
+  children,
+}: {
+  titulo: string;
+  hint?: React.ReactNode;
+  acoes?: React.ReactNode;
+  altura?: 'padrao' | 'alta';
+  largura?: 'padrao' | 'total';
+  rodape?: React.ReactNode;
+  children: React.ReactNode;
+}) {
+  return (
+    <Panel
+      className={cn('flex flex-col gap-3 p-4', largura === 'total' && 'lg:col-span-2')}
+    >
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <h3 className="font-title text-[14px] font-bold text-ink">{titulo}</h3>
+          {hint ? <p className="mt-0.5 text-[12px] text-ink-secondary">{hint}</p> : null}
+        </div>
+        {acoes ? <div className="flex items-center gap-2">{acoes}</div> : null}
+      </div>
+      <div className={cn('w-full min-w-0', altura === 'alta' ? 'h-[320px]' : 'h-[220px]')}>
+        {children}
+      </div>
+      {rodape}
+    </Panel>
   );
 }

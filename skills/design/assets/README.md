@@ -3,7 +3,8 @@
 Cópia integral do sistema visual do CRM Ativa, o mais recente e refinado dos
 projetos Mitra da Benenutri. `design.md` é o documento normativo (14 seções:
 stack, tokens, tipografia, cores, forma, primitivos, vocabulário do produto,
-padrões de tela, layout, marca, gráficos, acessibilidade, checklist de porte).
+padrões de tela, layout, marca, gráficos e BI, acessibilidade, checklist de
+porte).
 Leia o §14 dele antes de portar; este README só diz **o que copiar para onde**.
 
 ## Mapa de arquivos → destino no projeto novo
@@ -21,7 +22,7 @@ Leia o §14 dele antes de portar; este README só diz **o que copiar para onde**
 | `lib/theme.ts` | `frontend/src/lib/theme.ts` | tema claro/escuro/sistema: `getTheme`, `setTheme`, `toggleTheme`, `applyTheme`, `watchSystemTheme` (§2.1) |
 | `components/ThemeToggle.tsx` | `frontend/src/components/ThemeToggle.tsx` | botão Sol/Lua sobre `IconButton`, em tom neutro; **já montado** no rodapé do `AdminLayout` de exemplo |
 | `components/ui/*.tsx` | `frontend/src/components/ui/` | primitivos shadcn **já ajustados** (§7). Não rode `npx shadcn add` por cima sem reaplicar o diff |
-| `components/page.tsx` | `frontend/src/components/page.tsx` | vocabulário do produto (§8): `PageHeader`, `Panel`, `Toolbar`, `SelectMenu`, `Status`, `Table`, `Pagination`, `Board`/`BoardColumn`/`BoardCard`… (`EtiquetaLista` e `CheckRow` são do CRM: apague se a spec não pedir) |
+| `components/page.tsx` | `frontend/src/components/page.tsx` | vocabulário do produto (§8): `PageHeader`, `Panel`, `Toolbar`, `SelectMenu`, `Status`, `Table`, `Pagination`, `Board`/`BoardColumn`/`BoardCard`, e o bloco 8.7 de BI (`Kpi`, `Delta`, `Sparkline`, `PainelGrafico`, `corDeSerie`, `tomDeIntensidade`). `EtiquetaLista` e `CheckRow` são do CRM: apague se a spec não pedir; sem gráfico, apague o bloco 8.7 e o reexport de `ui/chart` |
 | `components/Logo.tsx` | `frontend/src/components/Logo.tsx` | marca: `BRAND_GREEN`, `Monogram` (SVG inline, `currentColor`), `MonogramTile` (quadrado do login, certo nos dois temas), `Wordmark` (PNG) |
 | `vitrine.html` | — (referência) | página autocontida com tokens, tipografia, componentes, listagem, login e marca nos dois temas; abra no navegador para ver o padrão antes de codar |
 | `components/AdminLayout.tsx` | `frontend/src/components/AdminLayout.tsx` | **exemplo** do layout (§10): janela que não rola, menu lateral com estado em `localStorage`, gaveta no mobile. Acoplado ao CRM (importa `@/lib/sessao`, módulos e rotas dele) — adapte |
@@ -36,8 +37,10 @@ npm i react-router-dom class-variance-authority clsx tailwind-merge tw-animate-c
 npm i -D tailwindcss @tailwindcss/vite @types/node
 ```
 
-`recharts` só se houver gráfico. `radix-ui` é o pacote **unificado**; não
-instale `@radix-ui/react-*` avulsos.
+`recharts` só se houver gráfico — e aí ele vem com o trio inteiro:
+`components/ui/chart.tsx`, o bloco 8.7 do `page.tsx` e os tokens `--data-*`
+do `index.css` (§12). Sem gráfico, os três saem juntos. `radix-ui` é o pacote
+**unificado**; não instale `@radix-ui/react-*` avulsos.
 
 ## Marca (§11)
 

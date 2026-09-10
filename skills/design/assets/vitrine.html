@@ -38,6 +38,19 @@
     --border-soft: rgba(191, 202, 184, 0.38);
     --overlay: rgba(0, 0, 0, 0.5);
     --mark-on-accent: #45963d;
+    /* Rampa de dados — cor de série (design.md §12). */
+    --data-1: hsl(212.8 67.7% 50.2%);
+    --data-2: hsl(17 82.1% 56.3%);
+    --data-3: hsl(158.5 73.3% 39.6%);
+    --data-4: hsl(40.8 100% 46.5%);
+    --data-5: hsl(337.4 70.3% 69.6%);
+    --data-6: hsl(120 100% 25.7%);
+    --data-7: hsl(248.8 48.4% 44.1%);
+    --data-8: hsl(0.4 73.5% 58.6%);
+    --data-seq-1: hsl(114.7 34% 60.8%);
+    --data-seq-2: var(--brand-400);
+    --data-seq-3: var(--brand-600);
+    --data-seq-4: var(--brand-900);
     --radius: 0.75rem;
     --font-sans: 'Work Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     --font-title: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -78,6 +91,19 @@
       --border-soft: rgba(191, 202, 184, 0.16);
       --overlay: rgba(0, 0, 0, 0.6);
       --mark-on-accent: var(--accent-foreground);
+      /* Rampa de dados no escuro (design.md §12). */
+      --data-1: hsl(212.8 76.8% 56.1%);
+      --data-2: hsl(17.1 70.2% 50%);
+      --data-3: hsl(159.2 72.7% 35.9%);
+      --data-4: hsl(39.7 100% 39.4%);
+      --data-5: hsl(338.2 61.1% 57.6%);
+      --data-6: hsl(120 100% 25.7%);
+      --data-7: hsl(246.6 69.4% 71.8%);
+      --data-8: hsl(0 71.8% 65.3%);
+      --data-seq-1: var(--brand-300);
+      --data-seq-2: var(--brand-400);
+      --data-seq-3: var(--brand-500);
+      --data-seq-4: hsl(116.8 39.9% 72%);
       color-scheme: dark;
     }
   }
@@ -115,6 +141,19 @@
     --border-soft: rgba(191, 202, 184, 0.16);
     --overlay: rgba(0, 0, 0, 0.6);
     --mark-on-accent: var(--accent-foreground);
+    /* Rampa de dados no escuro (design.md §12). */
+    --data-1: hsl(212.8 76.8% 56.1%);
+    --data-2: hsl(17.1 70.2% 50%);
+    --data-3: hsl(159.2 72.7% 35.9%);
+    --data-4: hsl(39.7 100% 39.4%);
+    --data-5: hsl(338.2 61.1% 57.6%);
+    --data-6: hsl(120 100% 25.7%);
+    --data-7: hsl(246.6 69.4% 71.8%);
+    --data-8: hsl(0 71.8% 65.3%);
+    --data-seq-1: var(--brand-300);
+    --data-seq-2: var(--brand-400);
+    --data-seq-3: var(--brand-500);
+    --data-seq-4: hsl(116.8 39.9% 72%);
     color-scheme: dark;
   }
 
@@ -180,6 +219,40 @@
   .swatch .ratio b { color: var(--muted-foreground); font-weight: 600; }
   .rampa { display: grid; grid-template-columns: repeat(10, 1fr); border-radius: 0.75rem; overflow: hidden; border: 1px solid var(--border); margin-top: 16px; }
   .rampa div { height: 44px; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 4px; font-size: 10px; font-weight: 600; letter-spacing: .04em; }
+
+  /* ── Gráficos e BI (design.md §12 · §8.7 · §9.7) ── */
+  .rampa-dados { display: grid; grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: 8px; }
+  .chip-dado { border: 1px solid var(--border); border-radius: 0.75rem; overflow: hidden; background: var(--card); }
+  .chip-dado .cor { height: 40px; }
+  .chip-dado .info { padding: 6px 8px; display: grid; gap: 1px; }
+  .chip-dado .nome { font-size: 11px; font-weight: 600; }
+  .chip-dado .hex { font-family: ui-monospace, Consolas, monospace; font-size: 10.5px; color: var(--muted-foreground); }
+  .chip-dado .ratio { font-size: 10.5px; color: var(--ink-muted); }
+  .bi { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 18px; }
+  .painel-graf.total { grid-column: 1 / -1; }
+  @media (max-width: 860px) { .bi { grid-template-columns: 1fr; } }
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-top: 18px; }
+  .kpi { border: 1px solid var(--row-border); border-radius: 0.75rem; background: var(--card); padding: 14px; display: grid; gap: 4px; }
+  .kpi .rot { font-size: 11px; text-transform: uppercase; letter-spacing: .09em; color: var(--ink-muted); font-weight: 600; }
+  .kpi .linha { display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; }
+  .kpi .valor { font-family: 'Manrope', sans-serif; font-size: 24px; font-weight: 800; }
+  .kpi .hint { font-size: 12px; color: var(--muted-foreground); }
+  .delta { display: inline-flex; align-items: center; gap: 2px; font-size: 12px; font-weight: 500; }
+  .delta svg { width: 14px; height: 14px; }
+  .delta.sobe { color: var(--primary); }
+  .delta.desce { color: var(--destructive); }
+  .delta.parado { color: var(--muted-foreground); }
+  .painel-graf { border: 1px solid var(--border); border-radius: 1rem; background: var(--card); padding: 16px; display: grid; gap: 12px; }
+  .painel-graf > header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin: 0; }
+  .painel-graf h3 { font-family: 'Manrope', sans-serif; font-size: 14px; font-weight: 700; }
+  .painel-graf .sub { font-size: 12px; color: var(--muted-foreground); }
+  .painel-graf .desenho { height: 200px; }
+  .painel-graf svg { width: 100%; height: 100%; display: block; }
+  .legenda-graf { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 11.5px; color: var(--muted-foreground); }
+  .legenda-graf i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; }
+  .calor { display: grid; grid-template-columns: 92px repeat(4, 1fr); gap: 3px; font-size: 11px; }
+  .calor .rot { color: var(--muted-foreground); align-self: center; }
+  .calor .cel { height: 34px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 600; }
   .rampa div:nth-child(-n+4) { color: var(--brand-950); }
   .rampa div:nth-child(n+5) { color: var(--brand-50); }
 
@@ -302,7 +375,7 @@
   .num { text-align: right; }
   .row-title { font-weight: 600; color: var(--foreground); }
   .row-meta { color: var(--muted-foreground); font-size: 12px; margin-top: 2px; }
-  .dash { color: var(--ink-muted); }
+  .dash { color: var(--muted-foreground); }
   .acoes { display: inline-flex; gap: 2px; }
   .pagination { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 16px; border-top: 1px solid var(--row-border); color: var(--muted-foreground); font-size: 12px; }
   .pagination .btns { display: inline-flex; gap: 6px; }
@@ -681,6 +754,76 @@
     <p class="nota">A quarta fase está vazia de propósito: a coluna guarda a altura, e o quadro continua legível como uma grade de quatro. Numa tela real ela levaria um <code>EmptyState</code> curto.</p>
   </section>
 
+  <section id="graficos">
+    <header>
+      <div class="eyebrow">design.md §12 · §8.7 · §9.7</div>
+      <h2>Gráficos e painel</h2>
+      <p>A cor de série tem rampa própria — não é a da marca, e não é a paleta de estado. Os oito slots abaixo vêm da paleta de referência do skill <code>dataviz</code>; o hex e o contraste são lidos da página no tema ativo.</p>
+    </header>
+
+    <div class="rampa-dados" id="rampa-dados"></div>
+    <p class="nota" style="margin-top:10px">Ordem fixa: a série 3 é <code>--data-3</code> mesmo que um filtro apague a 2. Os slots 3, 4 e 5 ficam abaixo de 3:1 contra o branco — no claro, o gráfico que os usa traz rótulo direto ou a visão de tabela. No escuro os oito passam.</p>
+
+    <div class="rampa-dados" id="rampa-seq" style="margin-top:14px"></div>
+    <p class="nota" style="margin-top:10px">Rampa sequencial: quatro passos, uma matiz só. É o trabalho em que a rampa da marca é boa — magnitude, não identidade. O mapa de calor abaixo é o consumidor dela.</p>
+
+    <div class="painel-graf" style="margin-top:14px">
+      <header>
+        <div>
+          <h3>Risco por dimensão e trimestre</h3>
+          <div class="sub">rampa sequencial · matriz ocupa a faixa inteira porque ela é uma grade, não um cartão</div>
+        </div>
+      </header>
+      <div class="calor" id="calor"></div>
+      <p class="nota">Célula vazia não é célula de valor mínimo: sem dado, o fundo é <code>--muted</code>, que é o <code>Dash</code> da cor.</p>
+    </div>
+
+    <div class="kpis" id="kpis"></div>
+
+    <div class="bi">
+      <div class="painel-graf">
+        <header>
+          <div>
+            <h3>Atingimento por trimestre</h3>
+            <div class="sub">% da meta · ciclo 2026</div>
+          </div>
+          <div class="segment" role="group" aria-label="Visão">
+            <button type="button" aria-pressed="true">Gráfico</button>
+            <button type="button" aria-pressed="false">Tabela</button>
+          </div>
+        </header>
+        <div class="desenho" id="g-barras"></div>
+        <div class="legenda-graf" id="l-barras"></div>
+      </div>
+
+      <div class="painel-graf">
+        <header>
+          <div>
+            <h3>Iniciativas por dimensão e horizonte</h3>
+            <div class="sub">contagem · cinco séries empilhadas</div>
+          </div>
+        </header>
+        <div class="desenho" id="g-pilha"></div>
+        <div class="legenda-graf" id="l-pilha"></div>
+      </div>
+
+      <div class="painel-graf total">
+        <header>
+          <div>
+            <h3>Receita líquida</h3>
+            <div class="sub">R$ mi · oito meses, realizado contra o ano anterior e a meta</div>
+          </div>
+        </header>
+        <div class="desenho" id="g-linhas"></div>
+        <div class="legenda-graf" id="l-linhas"></div>
+      </div>
+    </div>
+
+    <p class="nota" style="margin-top:14px"><b>Nada fica sozinho numa faixa.</b> Três gráficos numa grade de duas colunas deixariam o terceiro num cartão órfão com meia tela de vazio ao lado. O terceiro aqui ocupa a faixa inteira — e é a série temporal que faz por merecer: oito meses ganham em ficar largos, uma barra de quatro categorias não ganharia nada. Se o gráfico órfão não justifica a largura, ele não é o terceiro: ou sobe para a linha de cima, ou vira uma linha da tabela.</p>
+
+    <p class="nota" style="margin-top:8px">Todo gráfico mora num <code>PainelGrafico</code>, que é quem carrega a altura: o <code>ResponsiveContainer</code> do recharts mede o pai, e pai sem altura mede zero — o gráfico some sem erro nenhum no console.</p>
+  </section>
+
   <section id="login">
     <header>
       <div class="eyebrow">design.md §10.1 · §11</div>
@@ -805,7 +948,198 @@
         d.textContent = n;
         rampa.appendChild(d);
       });
+      desenharBI();
     }
+
+    /* ── Gráficos (design.md §12). SVG à mão de propósito: a vitrine não
+       instala recharts. O desenho MEDE O CONTAINER e usa o tamanho dele como
+       viewBox — é o que o <ResponsiveContainer> faz no recharts, e é por isso
+       que o pai precisa ter altura. Sem isso o viewBox fixo centraliza o
+       desenho e a faixa larga vira enfeite. ── */
+    var NS = 'http://www.w3.org/2000/svg';
+    var ML = 34, MR = 8, MT = 12, MB = 22;
+
+    function no(nome, attrs) {
+      var e = document.createElementNS(NS, nome);
+      for (var k in attrs) e.setAttribute(k, attrs[k]);
+      return e;
+    }
+    /* A caixa de desenho: tamanho real do container, margens já descontadas. */
+    function caixa(alvo) {
+      var r = alvo.getBoundingClientRect();
+      var w = Math.max(220, Math.round(r.width));
+      var h = Math.max(140, Math.round(r.height));
+      return { w: w, h: h, pw: w - ML - MR, ph: h - MT - MB };
+    }
+    function tela(c) {
+      var s = no('svg', { viewBox: '0 0 ' + c.w + ' ' + c.h, role: 'img' });
+      s.setAttribute('preserveAspectRatio', 'none');
+      return s;
+    }
+    function grade(svg, c, max, cats, sufixo) {
+      for (var i = 0; i <= 4; i++) {
+        var v = max * i / 4, y = MT + c.ph - (v / max) * c.ph;
+        svg.appendChild(no('line', { x1: ML, x2: ML + c.pw, y1: y, y2: y, stroke: 'var(--row-border)', 'stroke-width': 1 }));
+        var t = no('text', { x: ML - 6, y: y + 3, 'text-anchor': 'end', fill: 'var(--ink-muted)', 'font-size': 10 });
+        t.textContent = Math.round(v) + (sufixo || '');
+        svg.appendChild(t);
+      }
+      var passo = c.pw / cats.length;
+      cats.forEach(function (rot, i) {
+        var t = no('text', { x: ML + passo * (i + .5), y: c.h - MB + 14, 'text-anchor': 'middle', fill: 'var(--muted-foreground)', 'font-size': 10.5 });
+        t.textContent = rot;
+        svg.appendChild(t);
+      });
+    }
+    function barra(x, y, w, h, r) {
+      r = Math.min(r, w / 2, Math.max(h, 0));
+      return 'M' + x + ',' + (y + h) + 'V' + (y + r) + 'a' + r + ',' + r + ' 0 0 1 ' + r + ',' + (-r) +
+             'h' + (w - 2 * r) + 'a' + r + ',' + r + ' 0 0 1 ' + r + ',' + r + 'V' + (y + h) + 'Z';
+    }
+    function legenda(alvo, nomes, cores, tracejada) {
+      document.getElementById(alvo).innerHTML = nomes.map(function (n, i) {
+        var marca = (tracejada && i === nomes.length - 1)
+          ? '<i style="background:transparent;height:0;width:14px;border-top:2px dashed ' + cores[i] + ';vertical-align:2px"></i>'
+          : '<i style="background:' + cores[i] + '"></i>';
+        return '<span>' + marca + n + '</span>';
+      }).join('');
+    }
+    function corSerie(n) { return 'var(--data-' + n + ')'; }
+
+    var DIMS = ['Financeiro', 'Cliente', 'Processos', 'Pessoas'];
+    var ATING = [[78, 84, 91, 96], [62, 71, 69, 80], [88, 79, 83, 87], [54, 60, 74, 72]];
+    var RECEITA = [[4.1, 4.4, 5.2, 5.0, 5.6, 6.1, 6.4, 6.9], [3.6, 3.9, 4.3, 4.5, 4.8, 5.0, 5.3, 5.5], [4.3, 4.6, 4.9, 5.2, 5.5, 5.8, 6.2, 6.6]];
+    var PILHA = [[3, 2, 4, 1], [2, 3, 3, 2], [4, 2, 2, 3], [1, 3, 3, 2], [2, 1, 1, 2]];
+    var RISCO = [[3, 1, null, 4], [2, 2, 3, 1], [4, 3, 2, 2], [1, null, 2, 3]];
+
+    function desenharBI() {
+      var card = rgb('card');
+
+      var alvo = document.getElementById('rampa-dados');
+      alvo.innerHTML = '';
+      for (var i = 1; i <= 8; i++) {
+        var cor = rgb('data-' + i);
+        var r = ratio(cor, card);
+        var d = document.createElement('div');
+        d.className = 'chip-dado';
+        d.innerHTML = '<div class="cor" style="background:var(--data-' + i + ')"></div><div class="info">' +
+          '<div class="nome">--data-' + i + '</div><div class="hex">' + toHex(cor) + '</div>' +
+          '<div class="ratio">' + r.toFixed(2) + ':1' + (r >= 3 ? '' : ' · rotule') + '</div></div>';
+        alvo.appendChild(d);
+      }
+
+      var seq = document.getElementById('rampa-seq');
+      seq.innerHTML = '';
+      for (var s = 1; s <= 4; s++) {
+        var cs = rgb('data-seq-' + s);
+        var ds = document.createElement('div');
+        ds.className = 'chip-dado';
+        ds.innerHTML = '<div class="cor" style="background:var(--data-seq-' + s + ')"></div><div class="info">' +
+          '<div class="nome">--data-seq-' + s + '</div><div class="hex">' + toHex(cs) + '</div>' +
+          '<div class="ratio">' + ratio(cs, card).toFixed(2) + ':1</div></div>';
+        seq.appendChild(ds);
+      }
+
+      var kpis = [
+        ['Objetivos no prazo', '18', 'sobe', '12,5%', 'de 24 no ciclo'],
+        ['Atingimento médio', '81,4%', 'sobe', '3,1%', 'contra o Q3'],
+        ['Iniciativas atrasadas', '5', 'desce', '2,0%', 'duas viraram risco'],
+        ['Receita acumulada', 'R$ 44,7 mi', 'parado', '0,0%', 'meta R$ 44,9 mi']
+      ];
+      var setas = { sobe: 'M7 17 17 7M9 7h8v8', desce: 'M7 7l10 10M17 9v8H9', parado: 'M5 12h14' };
+      document.getElementById('kpis').innerHTML = kpis.map(function (k) {
+        return '<div class="kpi"><div class="rot">' + k[0] + '</div><div class="linha">' +
+          '<span class="valor">' + k[1] + '</span>' +
+          '<span class="delta ' + k[2] + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="' + setas[k[2]] + '"/></svg>' + k[3] + '</span>' +
+          '</div><div class="hint">' + k[4] + '</div></div>';
+      }).join('');
+
+      /* barras agrupadas — metade da grade */
+      var g1 = document.getElementById('g-barras');
+      var c1 = caixa(g1);
+      g1.innerHTML = '';
+      var svg1 = tela(c1);
+      grade(svg1, c1, 100, ['Q1', 'Q2', 'Q3', 'Q4'], '%');
+      var passo1 = c1.pw / 4, larg1 = Math.max(3, (passo1 - 12) / 4 - 2);
+      ATING.forEach(function (serie, si) {
+        serie.forEach(function (v, ci) {
+          var h = (v / 100) * c1.ph;
+          svg1.appendChild(no('path', { d: barra(ML + passo1 * ci + 6 + si * (larg1 + 2), MT + c1.ph - h, larg1, h, 3), fill: corSerie(si + 1) }));
+        });
+      });
+      g1.appendChild(svg1);
+      legenda('l-barras', DIMS, [1, 2, 3, 4].map(corSerie));
+
+      /* empilhado — metade da grade */
+      var g3 = document.getElementById('g-pilha');
+      var c3 = caixa(g3);
+      g3.innerHTML = '';
+      var svg3 = tela(c3);
+      grade(svg3, c3, 16, DIMS.map(function (d) { return d.slice(0, 4); }));
+      var passo3 = c3.pw / 4, larg3 = Math.min(34, passo3 - 16);
+      DIMS.forEach(function (_, ci) {
+        var acum = 0;
+        PILHA.forEach(function (serie, si) {
+          var h = (serie[ci] / 16) * c3.ph - 2;
+          var y = MT + c3.ph - ((acum + serie[ci]) / 16) * c3.ph;
+          svg3.appendChild(no('path', {
+            d: barra(ML + passo3 * ci + (passo3 - larg3) / 2, y, larg3, Math.max(2, h), si === PILHA.length - 1 ? 3 : 0),
+            fill: corSerie(si + 1)
+          }));
+          acum += serie[ci];
+        });
+      });
+      g3.appendChild(svg3);
+      legenda('l-pilha', ['Q1', 'Q2', 'Q3', 'Q4', 'Sem data'], [1, 2, 3, 4, 5].map(corSerie));
+
+      /* linhas — faixa inteira: com preserveAspectRatio="none" o traço
+         esticaria, então a espessura é corrigida pelo fator de escala. */
+      var g2 = document.getElementById('g-linhas');
+      var c2 = caixa(g2);
+      g2.innerHTML = '';
+      var svg2 = tela(c2);
+      grade(svg2, c2, 8, ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago']);
+      var passo2 = c2.pw / 7;
+      RECEITA.forEach(function (serie, si) {
+        var d = serie.map(function (v, i) {
+          return (i ? 'L' : 'M') + (ML + passo2 * i).toFixed(1) + ',' + (MT + c2.ph - (v / 8) * c2.ph).toFixed(1);
+        }).join(' ');
+        svg2.appendChild(no('path', {
+          d: d, fill: 'none', stroke: corSerie(si + 1), 'stroke-width': 2,
+          'stroke-linejoin': 'round', 'stroke-linecap': 'round',
+          'vector-effect': 'non-scaling-stroke',
+          'stroke-dasharray': si === 2 ? '6 5' : 'none'
+        }));
+        svg2.appendChild(no('circle', {
+          cx: ML + passo2 * 7, cy: MT + c2.ph - (serie[7] / 8) * c2.ph, r: 3.5,
+          fill: corSerie(si + 1), stroke: 'var(--card)', 'stroke-width': 2,
+          'vector-effect': 'non-scaling-stroke'
+        }));
+      });
+      g2.appendChild(svg2);
+      legenda('l-linhas', ['Realizado 2026', 'Realizado 2025', 'Meta 2026'], [1, 2, 3].map(corSerie), true);
+
+      var calor = document.getElementById('calor');
+      calor.innerHTML = '<div></div>' + ['Q1', 'Q2', 'Q3', 'Q4'].map(function (q) {
+        return '<div class="rot" style="text-align:center">' + q + '</div>';
+      }).join('');
+      RISCO.forEach(function (linha, i) {
+        calor.insertAdjacentHTML('beforeend', '<div class="rot">' + DIMS[i] + '</div>');
+        linha.forEach(function (v) {
+          var fundo = v === null ? 'var(--muted)' : 'var(--data-seq-' + v + ')';
+          var texto = v === null ? 'var(--ink-muted)' : (v >= 3 ? 'var(--card)' : 'var(--foreground)');
+          calor.insertAdjacentHTML('beforeend', '<div class="cel" style="background:' + fundo + ';color:' + texto + '">' + (v === null ? '—' : v) + '</div>');
+        });
+      });
+    }
+
+    /* Mudou a largura do componente, muda o desenho — a proporção é dele. */
+    var reagendar;
+    window.addEventListener('resize', function () {
+      clearTimeout(reagendar);
+      reagendar = setTimeout(desenharBI, 120);
+    });
+
     aplicar(salvo());
   })();
 
