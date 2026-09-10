@@ -234,6 +234,15 @@
     min-height: 100vh;
   }
 
+  /* Seleção na cor da interface, não no azul do sistema — o azul é a única
+     cor que a paleta não usa (§5), e aparecia justamente por cima do texto.
+     O par primary/primary-foreground já é escolhido para ter contraste nos
+     dois temas, então a seleção acompanha o tema sem uma cor nova. */
+  ::selection {
+    background: var(--primary);
+    color: var(--primary-foreground);
+  }
+
   button,
   input,
   select,

@@ -644,6 +644,11 @@ Tailwind e usa valor arbitrário em vez de `text-sm`:
   (`paper-sunken`) em vez de inventar um terceiro cinza.
 - **Não use azul em tela operacional.** Acento estrutural fica na paleta verde;
   atenção é âmbar (`attention`), risco é vermelho (`alert`/`destructive`).
+  Isso inclui a **seleção de texto**: o `::selection` do `@layer base` usa o par
+  `primary`/`primary-foreground`, senão o azul do sistema entra por cima do
+  texto — a única cor fora da paleta, e logo onde mais se olha. O par já é
+  escolhido para ter contraste nos dois temas, então a seleção acompanha o tema
+  sem inventar cor nova.
 - **Contraste.** `primary` (#156b16) dá 6,7:1 sobre branco e passa em corpo de
   texto, botão e ícone. `ink-secondary` (#5f675c) dá 5,9:1. **`ink-muted`
   (#7c8579) dá 3,8:1** — serve para rótulo de cabeçalho em caixa alta e
