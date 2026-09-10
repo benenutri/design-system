@@ -162,7 +162,8 @@ nativo em painel, selo preenchido em célula, zebra, inativo vermelho,
 `ink-muted` em corpo, azul estrutural, botão escondido por permissão, `0`
 onde é `Dash`, `shadcn add` sem reaplicar o diff, `@radix-ui/react-*` avulso,
 cor definida só no `@theme` fora do `:root`, coluna de quadro que cresce com o
-conteúdo. Contraste mínimo de texto e ícone: 4,5:1 sobre branco.
+conteúdo, `<img>` com `w-auto` dentro de `flex-col` (estica e deforma a marca).
+Contraste mínimo de texto e ícone: 4,5:1 sobre branco.
 
 ## Marca
 
@@ -176,6 +177,18 @@ Tela de login (§10.1): duas metades em `lg`; à esquerda assinatura, manchete
 em `font-title text-4xl`/`sm:text-5xl` e bloco `rounded-3xl bg-brand-50`; à
 direita cartão `max-w-md rounded-3xl border-rule-table bg-paper p-8 shadow-sm`
 com o monograma num quadrado `rounded-2xl bg-accent`; submit `w-full`.
+
+O cartão guarda o acesso inteiro numa máquina de estados de cinco passos —
+entrar, criar conta, confirmar e-mail, recuperar senha, nova senha — e não em
+cinco telas. "Esqueci minha senha" e "Criar conta" são `TextLink`, nunca um
+terceiro botão contornado; cada passo é um `<form>` de verdade (Enter e
+gerenciador de senhas). As marcas de Google e Microsoft são identidade alheia:
+cor cravada no SVG, no arquivo da tela, fora de `Logo.tsx` e do vocabulário.
+Sem backend de auth, os passos que só a conta real cumpre continuam navegáveis
+e recusam no envio — tela que não abre em desenvolvimento não é revisada.
+
+A assinatura é `w-fit`. Com `w-auto` numa coluna flex o `align-items: stretch`
+a deforma para a largura da coluna, e isso chega como "o logo está errado".
 
 ## Outra marca (projeto fora da Benenutri)
 

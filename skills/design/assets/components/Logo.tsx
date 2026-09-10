@@ -53,7 +53,15 @@ export function MonogramTile({ className }: { className?: string }) {
   );
 }
 
-/** Assinatura completa. PNG a 3× a largura exibida, na cor da marca. */
+/**
+ * Assinatura completa. PNG a 3× a largura exibida, na cor da marca.
+ *
+ * `w-fit`, e não `w-auto`: dentro de um container `flex-col` o
+ * `align-items: stretch` só age sobre largura `auto`, e esticava a assinatura
+ * para a coluna inteira — na tela de login ela saía 347px de largura por 32 de
+ * altura, o dobro do largo que a marca tem. `fit-content` não é `auto`, então
+ * o stretch não a alcança, e em `flex-row` nada muda.
+ */
 export function Wordmark({ className }: { className?: string }) {
-  return <img src={logoBenenutri} alt="BENENUTRI" className={cn('h-5 w-auto', className)} />;
+  return <img src={logoBenenutri} alt="BENENUTRI" className={cn('h-5 w-fit', className)} />;
 }

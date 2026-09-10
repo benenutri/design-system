@@ -533,6 +533,27 @@ export function CheckRow({
   );
 }
 
+/**
+ * Ação terciária que se lê como link, não como botão: "Esqueci minha senha",
+ * "Criar conta", "Voltar". É `<button>` e não `<a>` porque não navega — troca
+ * o passo da mesma tela; o sublinhado no hover é o que sinaliza que clica.
+ * Um terceiro botão numa coluna de botões apaga qual é a ação principal.
+ */
+export function TextLink({ className, type = 'button', ...props }: React.ComponentProps<'button'>) {
+  return (
+    <button
+      type={type}
+      className={cn(
+        'inline-flex items-center gap-1 rounded-sm text-[13px] font-semibold text-primary transition-colors',
+        'hover:underline focus-visible:ring-2 focus-visible:ring-ring/40 focus-visible:outline-none',
+        'disabled:pointer-events-none disabled:text-ink-muted disabled:no-underline',
+        className
+      )}
+      {...props}
+    />
+  );
+}
+
 // ── 8.4 Estado e sinalização ──────────────────────────────────────────────
 
 const STATUS_TONE = {

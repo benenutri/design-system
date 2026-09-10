@@ -760,6 +760,7 @@ LabelledField({ label, hint?, children, className? })   // idem, embrulhado em <
 ```tsx
 Button({ variant?: 'primary' | 'secondary' | 'ghost' | 'danger', size?: 'sm' | 'md', ...button })
 IconButton({ label, tone?: 'neutral' | 'danger' | 'attention', ...button })
+TextLink({ ...button })
 ```
 
 `variant` padrão é **`secondary`** (contorno branco), não primário: numa tela
@@ -774,6 +775,14 @@ botão de 32px), não por quem chama. Sem isso o lucide entrega o padrão dele,
 24px, e o ícone encosta na borda — que era o que acontecia com o `ThemeToggle`,
 enquanto a vitrine (`.iconbtn svg`) e todo ícone do `AdminLayout` já usavam 15
 e 16px. Quem chama passa só o ícone, sem classe de tamanho.
+
+`TextLink` é a ação **terciária** que se lê como link — "Esqueci minha senha",
+"Criar conta", "Voltar". Continua `<button>`, e não `<a>`, porque não navega:
+troca o passo da mesma tela; o sublinhado no hover é o que sinaliza que clica.
+Existe para o caso em que um terceiro botão contornado na mesma coluna apagaria
+qual é a ação principal — a hierarquia vira primário, secundário, texto. Não
+substitui `Button variant="ghost"`, que continua sendo botão dentro de barra e
+de rodapé de diálogo.
 
 ### 8.4 Estado e sinalização
 
@@ -985,6 +994,32 @@ direita um cartão `max-w-md rounded-3xl border-rule-table bg-paper p-8
 shadow-sm` com o monograma num quadrado `rounded-2xl bg-accent`. No mobile
 empilha. O botão de submit ocupa a largura toda (`w-full`).
 
+Dentro do cartão mora o acesso inteiro, numa máquina de estados de cinco
+passos — entrar, criar conta, confirmar o e-mail, recuperar senha, nova senha —
+e não em cinco telas: o e-mail digitado uma vez atravessa os passos seguintes
+sem ser pedido de novo. A ordem em "entrar" é Google, Microsoft, régua, e-mail
+e senha; o que sai da senha ("Esqueci minha senha", "Criar conta") é `TextLink`,
+nunca um terceiro botão contornado. Cada passo é um `<form>` de verdade — é o
+que dá Enter para enviar e o que o gerenciador de senhas lê.
+
+As marcas de Google e Microsoft são identidade alheia, como o verde da
+Benenutri é a nossa (§11): a cor vem cravada no SVG e não sai de token nem
+acompanha o tema. Ficam no arquivo da tela, não em `Logo.tsx` (que é a nossa
+marca) nem no vocabulário.
+
+Campo de código de 6 dígitos filtra para dígitos no `onChange` e **não** usa
+`maxLength`: o atributo conta o que está no DOM, sujeira inclusa, e ao chegar
+em seis caracteres passa a engolir dígitos bons — colar "12a3 45b6789" deixava
+`1234`. Como o filtro às vezes devolve o mesmo estado (digitou-se uma letra) e
+aí o React não re-renderiza, o handler também reescreve `e.target.value`, senão
+a letra fica visível no campo.
+
+Ambiente sem o backend de autenticação (no Mitra, sem `VITE_MITRA_AUTH_URL`):
+os passos que só a conta real cumpre **continuam navegáveis** e recusam no
+envio, dizendo o que fazer no lugar. Tela que não abre em desenvolvimento não é
+revisada, e quatro botões desabilitados escondem metade do acesso de quem
+trabalha local.
+
 ---
 
 ## 11. Marca
@@ -1008,6 +1043,14 @@ duplicar arquivo por cor. Para a marca em classe existe o token `--brand-mark`
 (`text-brand-mark`), fixo nos dois temas. O quadrado do login é o `MonogramTile`
 de `Logo.tsx`: verde da marca no claro, `accent-foreground` no escuro (§2.1). O `<img>` da assinatura precisa de `alt` com o nome
 da marca.
+
+A assinatura é `w-fit`, nunca `w-auto`. Dentro de um container `flex-col` o
+`align-items: stretch` age sobre largura `auto` e estica o `<img>` para a
+coluna inteira: na tela de login a marca saía a 347×32 quando a proporção dela
+é 5,12:1 — deformada ao dobro do largo, e ninguém lê isso como bug de CSS,
+só como "o logo está errado". `fit-content` não é `auto`, então o stretch não
+a alcança, e em `flex-row` nada muda. Vale para qualquer `<img>` de largura
+intrínseca posto numa coluna flex.
 
 ---
 
@@ -1082,3 +1125,8 @@ pizza em painel operacional.
 - `overflow-y-auto` numa coluna de quadro **sem** `min-h-0` no miolo: a altura
   fica escrita no arquivo e não acontece nada na tela.
 - Arrastar cartão como único jeito de mudar o estado — exclui teclado e toque.
+- `<img>` de largura intrínseca com `w-auto` dentro de um `flex-col`: o
+  `align-items: stretch` deforma a imagem para a largura da coluna. É `w-fit`
+  (§11) — foi assim que a assinatura foi parar esticada na tela de login.
+- `maxLength` num campo que filtra o valor no `onChange` (código de 6 dígitos):
+  o atributo conta os caracteres sujos do DOM e engole dígitos bons (§10.1).
