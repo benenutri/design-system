@@ -18,10 +18,10 @@ que valem como lei, com a regra de ouro herdada:
 |---|---|
 | `.claude-plugin/plugin.json` | manifesto do plugin |
 | `skills/design/SKILL.md` | a skill: qual modo usar (instalar, portar, construir, revisar, marca, tema escuro) |
-| `skills/design/assets/design.md` | sistema visual normativo — tokens, tipografia, cores, forma, primitivos, vocabulário, padrões de tela, marca, checklist |
+| `skills/design/assets/design.md` | sistema visual normativo — tokens, tipografia, cores, forma, primitivos, vocabulário, padrões de tela, marca, gráficos e BI, checklist |
 | `skills/design/assets/README.md` | mapa arquivo → destino ao instalar num projeto novo |
 | `skills/design/assets/constitution.md` | princípios de processo (spec antes de código, migrations, tokens) |
-| `skills/design/assets/vitrine.html` | página autocontida: tokens com contraste medido ao vivo, componentes, listagem, login e marca, nos dois temas — abra no navegador |
+| `skills/design/assets/vitrine.html` | página autocontida: tokens com contraste medido ao vivo, componentes, listagem, quadro, gráficos, login e marca, nos dois temas — abra no navegador |
 | `skills/design/assets/components/` | primitivos shadcn já ajustados, vocabulário de tela (`page.tsx`), marca (`Logo.tsx`), layout de exemplo |
 | `skills/design/assets/index.css` | fonte única de cor: `:root`, `.dark` e os apelidos de token |
 | `skills/design/assets/public/`, `src-assets/` | favicon, monograma e assinatura |
