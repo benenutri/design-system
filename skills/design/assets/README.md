@@ -29,6 +29,7 @@ Leia o §14 dele antes de portar; este README só diz **o que copiar para onde**
 | `public/favicon.svg` | `frontend/public/favicon.svg` | monograma branco sobre `#156b16` |
 | `public/logo-bn.svg` | `frontend/public/logo-bn.svg` | monograma vetorial (`currentColor`) para uso fora do React |
 | `src-assets/logo-benenutri.png` | `frontend/src/assets/logo-benenutri.png` | assinatura completa, 3× a largura exibida |
+| `email.html` | — (referência) | o e-mail transacional de referência (§15), gerado por `montarEmail` da `@benenutri/mitra-kanban`; abra no navegador antes de codar um e-mail. Projeto com a lib chama a função; sem a lib, copia este arquivo e preenche as partes |
 
 Dependências (§1.5):
 

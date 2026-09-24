@@ -6,7 +6,7 @@ description: Design system oficial da Benenutri para os projetos Mitra (p-NNNNN)
 # Design system Benenutri
 
 O kit completo está em `assets/` desta skill (leia `assets/README.md` para o
-mapa arquivo → destino). O documento normativo é `assets/design.md`: 14 seções
+mapa arquivo → destino). O documento normativo é `assets/design.md`: 15 seções
 que valem como lei — **onde ele e o código divergirem, um dos dois está errado;
 descubra qual antes de mudar**. Esta skill diz quando ler cada seção e como
 aplicar sem reinventar.
@@ -28,6 +28,7 @@ o kit.
 | "revisa a UI", "está fora do padrão?", PR com telas | **Revisar** | `design.md` §5, §14 (anti-padrões) |
 | logo, favicon, cor da marca, tela de login | **Marca** | `design.md` §10.1, §11 |
 | "modo escuro", "dark mode", "tema", "cor nova", "está estourando no escuro" | **Tema escuro** | `design.md` §2.1, `assets/README.md` |
+| "e-mail", "notificação por e-mail", "aviso", automação que manda e-mail, "assunto", "template de e-mail", "mandar para o fornecedor" | **E-mail** | `design.md` §15, `assets/email.html` |
 
 ## O essencial em dez linhas
 
@@ -76,6 +77,13 @@ o kit.
     `overflow-y-auto` não faz nada. Cartão não se arrasta — o estado muda por um
     controle explícito, e ele mora **dentro do item aberto** ("Mover para"), não
     na capa: a capa é para ler de relance (§9.6, emenda de 2026-09-11).
+
+14. **E-mail é um modelo só** (§15): marca em texto no verde da marca, nome do
+    sistema, título em frase (assunto `[Sistema] título`), blocos opcionais,
+    **um** botão e rodapé com o motivo. Cores em hex que são os tokens; sempre
+    claro; tom é faixa, nunca recolore o e-mail; texto do administrador é texto.
+    A implementação mora no motor da `@benenutri/mitra-kanban` (`montarEmail`);
+    nenhum projeto reescreve o HTML.
 
 Ausências deliberadas (§1.4): sem lib de formulário, sem estado global, sem
 date picker, sem CSS-in-JS, sem toast, sem drag-and-drop. Reverter é emenda à
@@ -241,6 +249,21 @@ confira contraste ≥ 4,5:1,
 troque fontes e `<link>` juntos, substitua os arquivos de marca e o
 `BRAND_GREEN`. Nenhum `@theme` precisa mudar.
 
+## E-mail
+
+- Leia `design.md` §15 e abra `assets/email.html` no navegador. Um modelo com
+  onze blocos, quatro fixos: marca e sistema, título, ação (um botão), rodapé.
+- Projeto com a `@benenutri/mitra-kanban`: **não escreva HTML**. Chame
+  `montarEmail(partes)` de `@benenutri/mitra-kanban/motor` e mande `html` em
+  `sendEmailMitra({ body })` com `assunto` em `subject`. O nome do sistema e o
+  endereço do card entram uma vez em `instalar({ email: { sistema, urlDoCard } })`.
+  Automação, menção, novo responsável e tarefa a lib já manda sozinha.
+- Projeto sem a lib: copie `assets/email.html` e preencha as partes; hex do
+  §15.2, nunca outro.
+- Ao revisar um e-mail: título diz o que aconteceu? Um botão só? Rodapé diz por
+  quê? Tom em faixa? Texto escapado? Dado ausente é travessão? Marca em
+  `#45963d`? Para fora da empresa, sem botão e rodapé que convida a responder?
+
 ## Ao commitar
 
 Mensagem em português, `tipo: descrição`, e **sem trailer `Co-Authored-By:
@@ -251,7 +274,7 @@ tocado por este plugin. Fluxo completo de SYNC/SHARE na skill `mitra-escopo`.
 
 | Quando | Abra |
 |---|---|
-| Qualquer decisão visual | `assets/design.md` (índice: §1 stack · §2 tokens · §3 apelidos · §4 tipografia · §5 cores · §6 forma · §7 primitivos · §8 vocabulário (8.5 quadro · 8.6 tabela · 8.7 gráficos) · §9 padrões de tela (9.1 tabela · 9.5 diálogo · 9.6 quadro · 9.7 painel) · §10 layout e login · §11 marca · §12 gráficos e BI (12.1 lib · 12.2 cor · 12.3 o que não se faz) · §13 movimento/acessibilidade · §14 checklist e anti-padrões) |
+| Qualquer decisão visual | `assets/design.md` (índice: §1 stack · §2 tokens · §3 apelidos · §4 tipografia · §5 cores · §6 forma · §7 primitivos · §8 vocabulário (8.5 quadro · 8.6 tabela · 8.7 gráficos) · §9 padrões de tela (9.1 tabela · 9.5 diálogo · 9.6 quadro · 9.7 painel) · §10 layout e login · §11 marca · §12 gráficos e BI (12.1 lib · 12.2 cor · 12.3 o que não se faz) · §13 movimento/acessibilidade · §14 checklist e anti-padrões · §15 e-mail) |
 | Copiar arquivos, dependências | `assets/README.md` |
 | Processo (spec antes de código, migrations, tokens) | `assets/constitution.md` |
 | Implementação de referência viva | `mitra-projects/p-57803/frontend/src` |

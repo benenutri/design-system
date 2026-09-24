@@ -17,6 +17,11 @@ painel operacional: densidade alta, ruído baixo, nada decorativo.
 Regra de ouro herdada: **onde este documento e o código divergirem, um dos dois
 está errado — descubra qual antes de mudar qualquer coisa.**
 
+> **E-mail adicionado em 2026-09-24** (§15): o modelo transacional — marca,
+> sistema, título em frase, blocos opcionais, um botão, rodapé com o motivo —
+> com os tokens em hex e a implementação única no motor da
+> `@benenutri/mitra-kanban` (spec 016). Nenhum componente de tela mudou.
+>
 > **Quadro adicionado em 2026-09-09** (§8.5 e §9.6): `Board`, `BoardColumn` e
 > `BoardCard`, com a coluna de altura fixa em que só a pilha de cartões rola.
 > A altura é do quadro, pelo `height` do `Board` (`curto` / `padrao` / `alto`),
@@ -1426,3 +1431,106 @@ color: var(--background);
 - Gráfico desenhado em tamanho fixo dentro de um painel maior, sobrando espaço
   dos dois lados. O desenho segue a proporção do componente (§12.1) — em SVG à
   mão, `viewBox` é o tamanho **medido** do container, nunca uma constante.
+- **E-mail** (§15): dois botões; assunto genérico ("Notificação", "Aviso");
+  e-mail inteiro pintado pelo tom; HTML escrito pelo administrador; marca
+  recolorida com o `--primary` ou em base64; corpo com `\n` cru mandado como
+  HTML; rodapé sem o motivo, ou "não responda" num e-mail que pede resposta.
+
+---
+
+## 15. E-mail
+
+*Adicionado em 2026-09-24 (spec 016 da `@benenutri/mitra-kanban`; proposta e
+decisões A–G no artefato "E-mail Benenutri").* Vale para tudo o que o sistema
+manda sozinho: aviso de card, automação do quadro, menção, prazo, pedido à
+indústria. É **um** modelo com blocos opcionais, não um modelo por assunto. A
+implementação é uma só e mora no motor da lib (`montarEmail`, importável de
+`@benenutri/mitra-kanban/motor`); um projeto sem a lib copia `assets/email.html`
+e preenche as partes — nunca reescreve o HTML.
+
+### 15.1 Anatomia
+
+Quatro partes fixas e sete blocos opcionais, nesta ordem:
+
+| # | Bloco | Fixo? | O que é |
+|---|---|---|---|
+| 1 | Marca e sistema | fixo | "BENENUTRI" em Manrope 800 no verde da marca `#45963d` (§11: nunca o `--primary`); à direita, o nome curto do sistema em `ink-secondary` |
+| 2 | Rótulo | opcional | quadro · fase, 11 px em caixa alta — o único lugar do `ink-muted` |
+| 3 | Título | fixo | uma frase que diz o que aconteceu; vira o assunto: `[Sistema] título` |
+| 4 | Resumo | opcional | quem fez o quê e por que interessa a quem lê; texto puro, `**negrito**` no nome do card |
+| 5 | Aviso | opcional | faixa `attention` ou `alert` dentro do cartão: o tom mora aqui e só aqui |
+| 6 | Corpo / citação | opcional | o texto do administrador (automação), ou a mensagem citada (autor · hora, barra `brand-200`, fundo `paper-sunken`) |
+| 7 | Dados | opcional | rótulo \| valor, uma linha por dado; mudança mostra o antigo riscado; ausência é travessão (§9.1) |
+| 8 | Tabela | opcional | itens (pedido à indústria): cabeçalho em caixa alta, sem zebra, número à direita |
+| 9 | Anexos | opcional | um link por arquivo, com tamanho |
+| 10 | Ação | fixo* | **um** botão `primary`, com o endereço escrito abaixo; *some só quando quem recebe não tem acesso ao sistema, ou quando o sistema não configurou o endereço do card |
+| 11 | Rodapé | fixo | por que a pessoa recebeu + "Mensagem automática do Sistema · Benenutri. Não responda"; para fora da empresa, frase própria que convida a responder |
+
+### 15.2 Tokens e forma
+
+Cliente de e-mail não lê variável de CSS nem classe: as cores vão em hex, e
+cada hex **é** um token do `:root`. O e-mail é sempre claro, então só a coluna
+do tema claro existe.
+
+| Papel | Hex | Token |
+|---|---|---|
+| fundo | `#f4f5f3` | `--background` |
+| cartão | `#ffffff` | `--card` |
+| borda | `#e4e9df` | `--border` |
+| separador | `#eef2eb` | `--row-border` |
+| texto | `#1b1c1a` | `--foreground` |
+| secundário | `#5f675c` | `--muted-foreground` |
+| rótulo em caixa alta | `#7c8579` | `--ink-muted` (só sobre branco) |
+| botão e link | `#156b16` | `--primary` |
+| marca | `#45963d` | `--brand-mark` |
+| citação | `#b9dcb4` sobre `#f4f5f3` | `--brand-200` / `--secondary` |
+| atenção | `#a46a18` sobre `#fff8f1` | `--attention` / `--attention-bg` |
+| alerta | `#b42318` sobre `#fef3f2` | `--destructive` / `--destructive-bg` |
+
+- Largura fixa de 600 px, tabela com CSS em linha; sem flex, grid, SVG ou
+  imagem de fundo. No celular o cartão ocupa a tela e o recuo interno cai de
+  32 para 20 px. Raio 12 no cartão e 8 no botão; o Outlook para Windows
+  ignora o raio, e nenhum bloco depende de sobreposição.
+- Tipografia: Manrope 700 no título (20 px), Work Sans no resto — 14 no corpo,
+  13 na tabela e na faixa de aviso, 12 em rótulo de dado e rodapé, 11 em caixa
+  alta com `0.14em`. Um ponto acima do painel (§4), porque e-mail se lê no
+  celular. Fontes pelo Google Fonts com **Arial** na pilha: Gmail e Outlook
+  Windows caem nela, e o desenho não depende da fonte chegar.
+- **Sempre claro** (`color-scheme: light`). O cliente pode inverter; o
+  contraste aguenta nos dois sentidos. Não existe versão escura.
+- Marca em texto por padrão. Imagem só com URL pública (`logoUrl`); base64
+  nunca — o Gmail descarta.
+
+### 15.3 Regras
+
+- **Título é uma frase** que diz o que aconteceu. Assunto = `[Sistema] título`.
+  "Notificação", "Aviso" e "Atualização do sistema" reprovam.
+- **Um botão por e-mail.** Segunda ação é link no texto. Sem endereço do card
+  configurado, o e-mail sai **sem** botão — nunca com link quebrado.
+- **O rodapé diz por quê.** "Você recebe este e-mail porque é responsável por
+  este pedido." Quem recebe sem saber por quê marca como spam.
+- **Tom é faixa.** Atenção e alerta são a faixa dentro do cartão; cabeçalho,
+  título e botão não mudam de cor. Verde no e-mail é a interface, não "sucesso".
+- **Texto é texto.** O que o administrador escreve na automação é escapado:
+  linha em branco vira parágrafo, quebra simples vira quebra, endereço vira
+  link, `**assim**` vira negrito. Nada além disso.
+- **Dado ausente é travessão**; mudança mostra o valor antigo riscado antes do
+  novo. Zero e vazio reprovam (§9.1 vale aqui).
+- **Preheader é o resumo**: a primeira linha, sem negrito, ao lado do assunto.
+- **Para fora da empresa** (fornecedor, indústria): mesmo modelo, sem botão,
+  rodapé que convida a responder no lugar de "não responda". O bloco Tabela
+  existe para isso.
+- Sem azul, sem emoji, sem ícone em imagem, sem zebra, sem cabeçalho de tabela
+  preenchido.
+
+### 15.4 Onde mora
+
+- Motor da `@benenutri/mitra-kanban` (spec 016): `montarEmail(partes) →
+  { assunto, html }`, `partesDeEmail` (estilo e miolo separados, para embutir
+  numa página), `paragrafosDeTexto`, `assuntoDeEmail`, `dataParaEmail`,
+  `EMAIL_CORES`; tipos em `PartesDeEmail`. O sistema consumidor configura
+  `email: { sistema, urlDoCard }` no `instalar()`; a lib manda por conta própria
+  a automação, a menção, o novo responsável e a tarefa atribuída.
+- Este kit: `assets/email.html` é o e-mail de referência gerado por
+  `montarEmail`; abra no navegador antes de codar. A proposta com os seis
+  exemplos e as decisões está no artefato "E-mail Benenutri" (2026-09-24).
