@@ -73,8 +73,9 @@ o kit.
 13. **Coluna de quadro tem altura fixa e rola por dentro** (`BoardColumn`,
     §9.6): o cabeçalho da fase fica parado, as fases continuam alinhadas e o
     quadro não empurra o resto da tela. Sem `min-h-0` no miolo, o
-    `overflow-y-auto` não faz nada. Cartão não se arrasta — o estado muda por
-    `SelectMenu` dentro do cartão.
+    `overflow-y-auto` não faz nada. Cartão não se arrasta — o estado muda por um
+    controle explícito, e ele mora **dentro do item aberto** ("Mover para"), não
+    na capa: a capa é para ler de relance (§9.6, emenda de 2026-09-11).
 
 Ausências deliberadas (§1.4): sem lib de formulário, sem estado global, sem
 date picker, sem CSS-in-JS, sem toast, sem drag-and-drop. Reverter é emenda à

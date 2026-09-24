@@ -1023,10 +1023,16 @@ Mecânica, na ordem em que morde:
 - Cada coluna guarda o **próprio** scroll. Rolar "Em andamento" não move
   "A fazer" — são pilhas independentes, e é isso que se espera de um quadro.
 
-**Não se arrasta cartão.** O estado muda por um controle explícito dentro do
-cartão (um `SelectMenu`), que funciona no teclado e no toque, respeita
-permissão e não custa uma biblioteca de drag-and-drop. Uma tela que só oferece
-o arrastar exclui quem navega por teclado.
+**Não se arrasta cartão.** O estado muda por um controle explícito, que funciona
+no teclado e no toque, respeita permissão e não custa uma biblioteca de
+drag-and-drop. Uma tela que só oferece o arrastar exclui quem navega por
+teclado.
+
+*Emenda de 2026-09-11 (mitra-kanban):* esse controle **não precisa morar na
+capa**. O cartão é para ler de relance — título, marcas, os campos que a etapa
+escolheu —, e um seletor no pé dele disputa a leitura com tudo isso. Onde o
+item abre (um card, uma ficha), o lugar do controle é lá dentro, numa faixa de
+ação explícita. Na capa, só quando não existe o "dentro".
 
 ### 9.7 Painel — a tela de BI
 
@@ -1268,6 +1274,35 @@ segmento leva **rótulo**, não só cor.
 o branco (2,82 · 2,17 · 2,69). Isso não os proíbe: obriga o gráfico onde eles
 aparecem a trazer rótulo direto ou a visão de tabela — que o `PainelGrafico` já
 pede em `acoes`. No escuro os oito passam de 3:1.
+
+**O quinto trabalho: o selo** *(emenda de 2026-09-11, spec 010 da mitra-kanban)*.
+Etiqueta de card põe o **rótulo por dentro da cor** — coisa que a rampa de dados
+não resolve sozinha, porque ela foi medida para marca de gráfico, não para
+carregar texto em cima. A regra é uma só, e não precisa de token novo:
+
+```css
+background: color-mix(in srgb, var(--data-N) 55%, var(--foreground));
+color: var(--background);
+```
+
+- **O selo contrasta com o tema, não se funde nele.** No claro ele é escuro com
+  rótulo claro; no escuro, claro com rótulo escuro. A regra é simétrica e não
+  tem caso por tema: o fundo mistura com a **tinta** do tema e o rótulo é a
+  **superfície** do tema — os dois trocam de lado sozinhos quando o tema vira.
+- **A tinta é a padrão do tema, uma só.** Tinta por matiz (uns com branco,
+  outros com escuro) é o que faz uma fileira de etiquetas parecer quebrada; o
+  que sustenta a legibilidade é o fundo ceder, não o texto alternar.
+- **55% é o número medido**, não estimado: é onde os oito matizes ainda passam
+  de 4,5:1 nos **dois** temas — pior caso amarelo 4,76:1 no claro e verde
+  7,12:1 no escuro; a 62% o amarelo do claro cai para 4,11:1. Verificado por
+  cálculo WCAG em teste automático.
+- **A rampa não muda.** `--data-N` continua a cor crua de série, de fase e da
+  bolinha de opção; quem clareia (ou escurece, no tema escuro) é o selo.
+- **Selo é para etiqueta**, não para toda opção colorida: um cartão em que todo
+  campo de seleção vira selo é uma parede de cor. Opção comum continua em ponto
+  + rótulo.
+- Selo é identidade, como o resto da rampa: **não** vira paleta de estado. "No
+  prazo / atrasado" continua sendo `Status` (§8.4).
 
 ### 12.3 O que não se faz
 
