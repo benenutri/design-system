@@ -76,7 +76,9 @@ o kit.
     quadro não empurra o resto da tela. Sem `min-h-0` no miolo, o
     `overflow-y-auto` não faz nada. Cartão não se arrasta — o estado muda por um
     controle explícito, e ele mora **dentro do item aberto** ("Mover para"), não
-    na capa: a capa é para ler de relance (§9.6, emenda de 2026-09-11).
+    na capa: a capa é para ler de relance (§9.6, emenda de 2026-09-11). Quando o
+    quadro é o assunto da tela, o `PageHeader` é `compacto` e não gruda, e o piso
+    do quadro é o de `curto` (§8.1 e §9.6, emenda de 2026-09-25).
 
 14. **E-mail é um modelo só** (§15): marca em texto no verde da marca, nome do
     sistema, título em frase (assunto `[Sistema] título`), blocos opcionais,

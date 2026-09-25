@@ -764,6 +764,16 @@ a tela inteira. O `-top-8` compensa o `lg:p-8` do `<main>`: o Chrome desconta o
 padding do container de rolagem ao grudar, e com `top-0` sobra uma faixa de
 32px por onde a tabela rolada continua aparecendo.
 
+*Emenda de 2026-09-25 (mitra-kanban, spec 018):* quando **o quadro é o assunto
+da tela** (§9.6), o cabeçalho é `compacto`: título, `meta` e ações numa linha,
+sem `module`, sem `description` e **sem grudar**. O cabeçalho de quatro linhas
+com o `pt-8` do sticky media 154px; num notebook 1366×768 isso deixava 270px
+de pilha e o `main` rolando 157px por baixo dele. Como ali o `main` não rola
+com o quadro, grudar não serve para nada — e quando a janela é baixa demais,
+rolar o cabeçalho para fora é o que devolve altura às colunas. A descrição do
+quadro vai para um `Popover` atrás de um `IconButton` de informação ao lado da
+contagem. Listagem e formulário continuam com o cabeçalho de sempre.
+
 ```tsx
 Panel({ children, className? })           // seção rounded-2xl + border-rule-table + bg-card
 PanelHeader({ title, hint?, children? })  // faixa de título dentro do painel
@@ -1038,6 +1048,15 @@ capa**. O cartão é para ler de relance — título, marcas, os campos que a et
 escolheu —, e um seletor no pé dele disputa a leitura com tudo isso. Onde o
 item abre (um card, uma ficha), o lugar do controle é lá dentro, numa faixa de
 ação explícita. Na capa, só quando não existe o "dentro".
+
+*Emenda de 2026-09-25 (mitra-kanban, spec 018):* quando o quadro preenche o
+`main` (`height="tela"`), **o que fica acima das colunas é o mínimo**: o
+`PageHeader` é `compacto` e não gruda (§8.1), e o piso do quadro é o de
+`curto` (22rem), não o de `padrao`. Com 30rem de piso, um 1366×768 ainda rolava
+o `main` 63px mesmo com o cabeçalho compacto; com 22rem a página não rola a
+partir de 585px de viewport. A `Toolbar` não muda (tirar os rótulos ganharia
+19px e deixaria "Todos" sem dizer do quê), a descrição da fase fica, e o
+`lg:p-8` do `main` é do layout, não da tela.
 
 ### 9.7 Painel — a tela de BI
 
