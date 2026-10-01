@@ -1,0 +1,17 @@
+# O simulador (assets/backend/simulator) grava o SQLite ao lado do código:
+# mitra-sim.db no dia a dia, p-NNNNN-smoke.db no smoke test. Nenhum dos dois é
+# fonte — os dois são recriados a partir do schema e do seed.
+*.db
+
+# Dependências do simulador.
+node_modules/
+
+# Valores reais de ambiente. Os .env.example versionados nascem VAZIOS de
+# propósito: na Mitra quem popula é o sandbox, e VITE_* vai para o bundle
+# público.
+.env
+.env.local
+
+# Sujeira de sistema de arquivos.
+desktop.ini
+.DS_Store
