@@ -17,6 +17,7 @@ que valem como lei, com a regra de ouro herdada:
 | Caminho | O que é |
 |---|---|
 | `.claude-plugin/plugin.json` | manifesto do plugin |
+| `skills/mitra-escopo/` | skill `mitra-escopo`: escopo, dev local e publicação na Mitra (ver o README dela) |
 | `skills/design/SKILL.md` | a skill: qual modo usar (instalar, portar, construir, revisar, marca, tema escuro) |
 | `skills/design/assets/design.md` | sistema visual normativo — tokens, tipografia, cores, forma, primitivos, vocabulário, padrões de tela, marca, gráficos e BI, checklist |
 | `skills/design/assets/README.md` | mapa arquivo → destino ao instalar num projeto novo |
@@ -33,10 +34,11 @@ o sistema atravessar projeto sem reescrita.
 
 ## Como usar
 
-Clone dentro da pasta de skills do Claude Code:
+No Claude Code:
 
-```bash
-git clone https://github.com/benenutri/design-system.git ~/.claude/skills/benenutri
+```
+/plugin marketplace add benenutri/claude-plugins
+/plugin install benenutri@benenutri
 ```
 
 Depois, num projeto da Benenutri, chame `/benenutri:design` — ou simplesmente

@@ -55,8 +55,11 @@ evidência automática exigida; o plan mapeia cada linha para
 
 ## Como usar
 
-```bash
-git clone https://github.com/benenutri/mitra-escopo.git ~/.claude/skills/mitra-escopo
+Vem no plugin `benenutri` (`/benenutri:mitra-escopo`):
+
+```
+/plugin marketplace add benenutri/claude-plugins
+/plugin install benenutri@benenutri
 ```
 
 Depois é só pedir o que quer — escopar uma feature, subir o simulador,
